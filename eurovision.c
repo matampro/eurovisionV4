@@ -612,5 +612,4 @@ List eurovisionRunGetFriendlyStates(Eurovision eurovision) {
                 }
             }
         }
-
     }
