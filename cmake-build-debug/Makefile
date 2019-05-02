@@ -149,6 +149,60 @@ eurovision.c.s:
 	$(MAKE) -f CMakeFiles\eurovisionV4.dir\build.make CMakeFiles/eurovisionV4.dir/eurovision.c.s
 .PHONY : eurovision.c.s
 
+eurovisionTests.obj: eurovisionTests.c.obj
+
+.PHONY : eurovisionTests.obj
+
+# target to build an object file
+eurovisionTests.c.obj:
+	$(MAKE) -f CMakeFiles\eurovisionV4.dir\build.make CMakeFiles/eurovisionV4.dir/eurovisionTests.c.obj
+.PHONY : eurovisionTests.c.obj
+
+eurovisionTests.i: eurovisionTests.c.i
+
+.PHONY : eurovisionTests.i
+
+# target to preprocess a source file
+eurovisionTests.c.i:
+	$(MAKE) -f CMakeFiles\eurovisionV4.dir\build.make CMakeFiles/eurovisionV4.dir/eurovisionTests.c.i
+.PHONY : eurovisionTests.c.i
+
+eurovisionTests.s: eurovisionTests.c.s
+
+.PHONY : eurovisionTests.s
+
+# target to generate assembly for a file
+eurovisionTests.c.s:
+	$(MAKE) -f CMakeFiles\eurovisionV4.dir\build.make CMakeFiles/eurovisionV4.dir/eurovisionTests.c.s
+.PHONY : eurovisionTests.c.s
+
+eurovisionTestsMain.obj: eurovisionTestsMain.c.obj
+
+.PHONY : eurovisionTestsMain.obj
+
+# target to build an object file
+eurovisionTestsMain.c.obj:
+	$(MAKE) -f CMakeFiles\eurovisionV4.dir\build.make CMakeFiles/eurovisionV4.dir/eurovisionTestsMain.c.obj
+.PHONY : eurovisionTestsMain.c.obj
+
+eurovisionTestsMain.i: eurovisionTestsMain.c.i
+
+.PHONY : eurovisionTestsMain.i
+
+# target to preprocess a source file
+eurovisionTestsMain.c.i:
+	$(MAKE) -f CMakeFiles\eurovisionV4.dir\build.make CMakeFiles/eurovisionV4.dir/eurovisionTestsMain.c.i
+.PHONY : eurovisionTestsMain.c.i
+
+eurovisionTestsMain.s: eurovisionTestsMain.c.s
+
+.PHONY : eurovisionTestsMain.s
+
+# target to generate assembly for a file
+eurovisionTestsMain.c.s:
+	$(MAKE) -f CMakeFiles\eurovisionV4.dir\build.make CMakeFiles/eurovisionV4.dir/eurovisionTestsMain.c.s
+.PHONY : eurovisionTestsMain.c.s
+
 map.obj: map.c.obj
 
 .PHONY : map.obj
@@ -188,6 +242,12 @@ help:
 	@echo ... eurovision.obj
 	@echo ... eurovision.i
 	@echo ... eurovision.s
+	@echo ... eurovisionTests.obj
+	@echo ... eurovisionTests.i
+	@echo ... eurovisionTests.s
+	@echo ... eurovisionTestsMain.obj
+	@echo ... eurovisionTestsMain.i
+	@echo ... eurovisionTestsMain.s
 	@echo ... map.obj
 	@echo ... map.i
 	@echo ... map.s

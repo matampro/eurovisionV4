@@ -5,6 +5,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
   "E:/Documents/studies/technion/semester 4/CLion/eurovisionV4/eurovision.c" "E:/Documents/studies/technion/semester 4/CLion/eurovisionV4/cmake-build-debug/CMakeFiles/eurovisionV4.dir/eurovision.c.obj"
+  "E:/Documents/studies/technion/semester 4/CLion/eurovisionV4/eurovisionTests.c" "E:/Documents/studies/technion/semester 4/CLion/eurovisionV4/cmake-build-debug/CMakeFiles/eurovisionV4.dir/eurovisionTests.c.obj"
+  "E:/Documents/studies/technion/semester 4/CLion/eurovisionV4/eurovisionTestsMain.c" "E:/Documents/studies/technion/semester 4/CLion/eurovisionV4/cmake-build-debug/CMakeFiles/eurovisionV4.dir/eurovisionTestsMain.c.obj"
   "E:/Documents/studies/technion/semester 4/CLion/eurovisionV4/map.c" "E:/Documents/studies/technion/semester 4/CLion/eurovisionV4/cmake-build-debug/CMakeFiles/eurovisionV4.dir/map.c.obj"
   )
 set(CMAKE_C_COMPILER_ID "GNU")

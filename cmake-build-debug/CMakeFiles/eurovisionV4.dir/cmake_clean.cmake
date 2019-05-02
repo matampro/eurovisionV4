@@ -1,6 +1,8 @@
 file(REMOVE_RECURSE
   "CMakeFiles/eurovisionV4.dir/eurovision.c.obj"
   "CMakeFiles/eurovisionV4.dir/map.c.obj"
+  "CMakeFiles/eurovisionV4.dir/eurovisionTestsMain.c.obj"
+  "CMakeFiles/eurovisionV4.dir/eurovisionTests.c.obj"
   "eurovisionV4.pdb"
   "eurovisionV4.exe"
   "eurovisionV4.exe.manifest"

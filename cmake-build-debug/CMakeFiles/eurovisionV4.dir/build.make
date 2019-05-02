@@ -82,21 +82,52 @@ CMakeFiles/eurovisionV4.dir/map.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/eurovisionV4.dir/map.c.s"
 	C:\PROGRA~1\MINGW-~1\X86_64~1.0-P\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S "E:\Documents\studies\technion\semester 4\CLion\eurovisionV4\map.c" -o CMakeFiles\eurovisionV4.dir\map.c.s
 
+CMakeFiles/eurovisionV4.dir/eurovisionTestsMain.c.obj: CMakeFiles/eurovisionV4.dir/flags.make
+CMakeFiles/eurovisionV4.dir/eurovisionTestsMain.c.obj: ../eurovisionTestsMain.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="E:\Documents\studies\technion\semester 4\CLion\eurovisionV4\cmake-build-debug\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/eurovisionV4.dir/eurovisionTestsMain.c.obj"
+	C:\PROGRA~1\MINGW-~1\X86_64~1.0-P\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\eurovisionV4.dir\eurovisionTestsMain.c.obj   -c "E:\Documents\studies\technion\semester 4\CLion\eurovisionV4\eurovisionTestsMain.c"
+
+CMakeFiles/eurovisionV4.dir/eurovisionTestsMain.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/eurovisionV4.dir/eurovisionTestsMain.c.i"
+	C:\PROGRA~1\MINGW-~1\X86_64~1.0-P\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E "E:\Documents\studies\technion\semester 4\CLion\eurovisionV4\eurovisionTestsMain.c" > CMakeFiles\eurovisionV4.dir\eurovisionTestsMain.c.i
+
+CMakeFiles/eurovisionV4.dir/eurovisionTestsMain.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/eurovisionV4.dir/eurovisionTestsMain.c.s"
+	C:\PROGRA~1\MINGW-~1\X86_64~1.0-P\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S "E:\Documents\studies\technion\semester 4\CLion\eurovisionV4\eurovisionTestsMain.c" -o CMakeFiles\eurovisionV4.dir\eurovisionTestsMain.c.s
+
+CMakeFiles/eurovisionV4.dir/eurovisionTests.c.obj: CMakeFiles/eurovisionV4.dir/flags.make
+CMakeFiles/eurovisionV4.dir/eurovisionTests.c.obj: ../eurovisionTests.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="E:\Documents\studies\technion\semester 4\CLion\eurovisionV4\cmake-build-debug\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/eurovisionV4.dir/eurovisionTests.c.obj"
+	C:\PROGRA~1\MINGW-~1\X86_64~1.0-P\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\eurovisionV4.dir\eurovisionTests.c.obj   -c "E:\Documents\studies\technion\semester 4\CLion\eurovisionV4\eurovisionTests.c"
+
+CMakeFiles/eurovisionV4.dir/eurovisionTests.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/eurovisionV4.dir/eurovisionTests.c.i"
+	C:\PROGRA~1\MINGW-~1\X86_64~1.0-P\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E "E:\Documents\studies\technion\semester 4\CLion\eurovisionV4\eurovisionTests.c" > CMakeFiles\eurovisionV4.dir\eurovisionTests.c.i
+
+CMakeFiles/eurovisionV4.dir/eurovisionTests.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/eurovisionV4.dir/eurovisionTests.c.s"
+	C:\PROGRA~1\MINGW-~1\X86_64~1.0-P\mingw64\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S "E:\Documents\studies\technion\semester 4\CLion\eurovisionV4\eurovisionTests.c" -o CMakeFiles\eurovisionV4.dir\eurovisionTests.c.s
+
 # Object files for target eurovisionV4
 eurovisionV4_OBJECTS = \
 "CMakeFiles/eurovisionV4.dir/eurovision.c.obj" \
-"CMakeFiles/eurovisionV4.dir/map.c.obj"
+"CMakeFiles/eurovisionV4.dir/map.c.obj" \
+"CMakeFiles/eurovisionV4.dir/eurovisionTestsMain.c.obj" \
+"CMakeFiles/eurovisionV4.dir/eurovisionTests.c.obj"
 
 # External object files for target eurovisionV4
 eurovisionV4_EXTERNAL_OBJECTS =
 
 eurovisionV4.exe: CMakeFiles/eurovisionV4.dir/eurovision.c.obj
 eurovisionV4.exe: CMakeFiles/eurovisionV4.dir/map.c.obj
+eurovisionV4.exe: CMakeFiles/eurovisionV4.dir/eurovisionTestsMain.c.obj
+eurovisionV4.exe: CMakeFiles/eurovisionV4.dir/eurovisionTests.c.obj
 eurovisionV4.exe: CMakeFiles/eurovisionV4.dir/build.make
+eurovisionV4.exe: ../libmtm.a
 eurovisionV4.exe: CMakeFiles/eurovisionV4.dir/linklibs.rsp
 eurovisionV4.exe: CMakeFiles/eurovisionV4.dir/objects1.rsp
 eurovisionV4.exe: CMakeFiles/eurovisionV4.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir="E:\Documents\studies\technion\semester 4\CLion\eurovisionV4\cmake-build-debug\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_3) "Linking C executable eurovisionV4.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir="E:\Documents\studies\technion\semester 4\CLion\eurovisionV4\cmake-build-debug\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_5) "Linking C executable eurovisionV4.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\eurovisionV4.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

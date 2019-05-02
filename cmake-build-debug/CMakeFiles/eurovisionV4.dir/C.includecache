@@ -6,3 +6,73 @@
 
 #IncludeRegexTransform: 
 
+E:/Documents/studies/technion/semester 4/CLion/eurovisionV4/eurovision.c
+stdio.h
+-
+eurovision.h
+E:/Documents/studies/technion/semester 4/CLion/eurovisionV4/eurovision.h
+stdlib.h
+-
+stdbool.h
+-
+assert.h
+-
+string.h
+-
+list.h
+E:/Documents/studies/technion/semester 4/CLion/eurovisionV4/list.h
+
+E:/Documents/studies/technion/semester 4/CLion/eurovisionV4/eurovision.h
+list.h
+E:/Documents/studies/technion/semester 4/CLion/eurovisionV4/list.h
+map.h
+E:/Documents/studies/technion/semester 4/CLion/eurovisionV4/map.h
+
+E:/Documents/studies/technion/semester 4/CLion/eurovisionV4/eurovisionTests.c
+stdlib.h
+-
+stdio.h
+-
+string.h
+-
+stdbool.h
+-
+assert.h
+-
+list.h
+E:/Documents/studies/technion/semester 4/CLion/eurovisionV4/list.h
+eurovision.h
+E:/Documents/studies/technion/semester 4/CLion/eurovisionV4/eurovision.h
+eurovisionTests.h
+E:/Documents/studies/technion/semester 4/CLion/eurovisionV4/eurovisionTests.h
+
+E:/Documents/studies/technion/semester 4/CLion/eurovisionV4/eurovisionTests.h
+stdbool.h
+-
+
+E:/Documents/studies/technion/semester 4/CLion/eurovisionV4/eurovisionTestsMain.c
+stdio.h
+-
+stdlib.h
+-
+eurovisionTests.h
+E:/Documents/studies/technion/semester 4/CLion/eurovisionV4/eurovisionTests.h
+
+E:/Documents/studies/technion/semester 4/CLion/eurovisionV4/list.h
+stdbool.h
+-
+
+E:/Documents/studies/technion/semester 4/CLion/eurovisionV4/map.c
+stdio.h
+-
+map.h
+E:/Documents/studies/technion/semester 4/CLion/eurovisionV4/map.h
+stdlib.h
+-
+memory.h
+-
+
+E:/Documents/studies/technion/semester 4/CLion/eurovisionV4/map.h
+stdbool.h
+-
+

@@ -80,6 +80,15 @@
 		<Unit filename="E:/Documents/studies/technion/semester 4/CLion/eurovisionV4/eurovision.h">
 			<Option target="eurovisionV4"/>
 		</Unit>
+		<Unit filename="E:/Documents/studies/technion/semester 4/CLion/eurovisionV4/eurovisionTests.c">
+			<Option target="eurovisionV4"/>
+		</Unit>
+		<Unit filename="E:/Documents/studies/technion/semester 4/CLion/eurovisionV4/eurovisionTests.h">
+			<Option target="eurovisionV4"/>
+		</Unit>
+		<Unit filename="E:/Documents/studies/technion/semester 4/CLion/eurovisionV4/eurovisionTestsMain.c">
+			<Option target="eurovisionV4"/>
+		</Unit>
 		<Unit filename="E:/Documents/studies/technion/semester 4/CLion/eurovisionV4/list.h">
 			<Option target="eurovisionV4"/>
 		</Unit>
@@ -87,6 +96,9 @@
 			<Option target="eurovisionV4"/>
 		</Unit>
 		<Unit filename="E:/Documents/studies/technion/semester 4/CLion/eurovisionV4/map.h">
+			<Option target="eurovisionV4"/>
+		</Unit>
+		<Unit filename="E:/Documents/studies/technion/semester 4/CLion/eurovisionV4/test_utilities.h">
 			<Option target="eurovisionV4"/>
 		</Unit>
 		<Unit filename="E:/Documents/studies/technion/semester 4/CLion/eurovisionV4/CMakeLists.txt">
