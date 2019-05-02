@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <assert.h>
 #include <string.h>
+#include "list.h"
 
 
 #define NUMBER_OF_RESULTS 10
@@ -199,11 +200,12 @@ bool checkIfNameIsLegal(const char *name){
     return true;
 }
 
-EurovisionResult eurovisionAddState(Eurovision eurovision, int stateId, const char *stateName, const char *songName)
-{
-    if(!checkIfNotNegitive(stateId)){
+EurovisionResult eurovisionAddState(Eurovision eurovision, int stateId, const char *stateName, const char *songName){
+    if (eurovision == NULL){
+        return EUROVISION_NULL_ARGUMENT;
+    } else if (!checkIfNotNegitive(stateId)){
         return EUROVISION_INVALID_ID;
-    } else if(mapContains(eurovision->state, &stateId)){
+    } else if (mapContains(eurovision->state, &stateId)){
         return EUROVISION_STATE_ALREADY_EXIST;
     }else if( !checkIfNameIsLegal(stateName) || !checkIfNameIsLegal(songName)){
         return EUROVISION_INVALID_NAME;
@@ -227,14 +229,21 @@ EurovisionResult eurovisionAddState(Eurovision eurovision, int stateId, const ch
             eurovisionDestroy(eurovision);
             return EUROVISION_OUT_OF_MEMORY;
         }
-        void* result = mapCreate(copyVoteDataElement,copyKeyElement,freeVoteDataElement,freeKeyElement,                  //where goes the pointer of mapCreate?
+        Map citizenVote = mapCreate(copyVoteDataElement,copyKeyElement,freeVoteDataElement,freeKeyElement,
                                  compareKeyElements);
-        if(result == NULL) {
+        if(citizenVote == NULL) {
             freeStateData(newStateData);
             free(newStateData);
             eurovisionDestroy(eurovision);
             return EUROVISION_OUT_OF_MEMORY;
         }else{
+            MapResult mapResult = mapPut(eurovision->state, &stateId, newStateData);  //we have to add a new map to the *state
+            if(mapResult == MAP_OUT_OF_MEMORY) {
+                freeStateData(newStateData);
+                free(newStateData);
+                eurovisionDestroy(eurovision);
+                return EUROVISION_OUT_OF_MEMORY;
+            }
             return EUROVISION_SUCCESS;
         }
     }

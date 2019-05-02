@@ -109,9 +109,10 @@ int mapGetSize(Map map){
 }
 
 bool mapContains(Map map, MapKeyElement element){
-    if((map == NULL) || (element == NULL)){
+    if((map == NULL) || (element == NULL) || (map->head == NULL)){  // check also that map->head is not NULL
         return false;
     }
+    map->tail = map->head;                                          // map->tail needs to start from head
     while (map->tail->next != NULL){
         if (map->tail->mapKeyElement == element){
             return true;
