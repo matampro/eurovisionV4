@@ -150,6 +150,9 @@ MapResult mapPut(Map map, MapKeyElement keyElement, MapDataElement dataElement) 
     if((map == NULL) || (keyElement == NULL)|| (dataElement == NULL)){
         return MAP_OUT_OF_MEMORY;
     }
+    if (mapContains(map, keyElement)){
+        return MAP_ITEM_ALREADY_EXISTS;
+    }
     Node new_node=NULL;
     if(map->head == NULL){                    //first node in the list
         if (createNewNode(&new_node, keyElement, dataElement,map) == MAP_OUT_OF_MEMORY) {

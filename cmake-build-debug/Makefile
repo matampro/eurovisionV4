@@ -149,6 +149,33 @@ eurovision.c.s:
 	$(MAKE) -f CMakeFiles\eurovisionV4.dir\build.make CMakeFiles/eurovisionV4.dir/eurovision.c.s
 .PHONY : eurovision.c.s
 
+map.obj: map.c.obj
+
+.PHONY : map.obj
+
+# target to build an object file
+map.c.obj:
+	$(MAKE) -f CMakeFiles\eurovisionV4.dir\build.make CMakeFiles/eurovisionV4.dir/map.c.obj
+.PHONY : map.c.obj
+
+map.i: map.c.i
+
+.PHONY : map.i
+
+# target to preprocess a source file
+map.c.i:
+	$(MAKE) -f CMakeFiles\eurovisionV4.dir\build.make CMakeFiles/eurovisionV4.dir/map.c.i
+.PHONY : map.c.i
+
+map.s: map.c.s
+
+.PHONY : map.s
+
+# target to generate assembly for a file
+map.c.s:
+	$(MAKE) -f CMakeFiles\eurovisionV4.dir\build.make CMakeFiles/eurovisionV4.dir/map.c.s
+.PHONY : map.c.s
+
 # Help Target
 help:
 	@echo The following are some of the valid targets for this Makefile:
@@ -161,6 +188,9 @@ help:
 	@echo ... eurovision.obj
 	@echo ... eurovision.i
 	@echo ... eurovision.s
+	@echo ... map.obj
+	@echo ... map.i
+	@echo ... map.s
 .PHONY : help
 
 

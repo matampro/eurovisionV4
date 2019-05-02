@@ -80,6 +80,15 @@
 		<Unit filename="E:/Documents/studies/technion/semester 4/CLion/eurovisionV4/eurovision.h">
 			<Option target="eurovisionV4"/>
 		</Unit>
+		<Unit filename="E:/Documents/studies/technion/semester 4/CLion/eurovisionV4/list.h">
+			<Option target="eurovisionV4"/>
+		</Unit>
+		<Unit filename="E:/Documents/studies/technion/semester 4/CLion/eurovisionV4/map.c">
+			<Option target="eurovisionV4"/>
+		</Unit>
+		<Unit filename="E:/Documents/studies/technion/semester 4/CLion/eurovisionV4/map.h">
+			<Option target="eurovisionV4"/>
+		</Unit>
 		<Unit filename="E:/Documents/studies/technion/semester 4/CLion/eurovisionV4/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>

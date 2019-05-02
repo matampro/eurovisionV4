@@ -6,3 +6,6 @@ CMakeFiles/eurovisionV4.dir/eurovision.c.obj: ../eurovision.h
 CMakeFiles/eurovisionV4.dir/eurovision.c.obj: ../list.h
 CMakeFiles/eurovisionV4.dir/eurovision.c.obj: ../map.h
 
+CMakeFiles/eurovisionV4.dir/map.c.obj: ../map.c
+CMakeFiles/eurovisionV4.dir/map.c.obj: ../map.h
+
