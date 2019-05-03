@@ -52,11 +52,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/eurovision.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4675">
-              <caret line="275" column="80" selection-start-line="275" selection-start-column="80" selection-end-line="275" selection-end-column="80" />
-              <folding>
-                <element signature="e#0#18#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="17">
+              <caret line="1" column="17" selection-start-line="1" selection-start-column="17" selection-end-line="1" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -113,10 +110,10 @@
       <list>
         <option value="$PROJECT_DIR$/main.c" />
         <option value="$PROJECT_DIR$/map.c" />
-        <option value="$PROJECT_DIR$/eurovision.c" />
         <option value="$PROJECT_DIR$/eurovisionTests.c" />
         <option value="$PROJECT_DIR$/map_example_test.c" />
         <option value="$PROJECT_DIR$/CMakeLists.txt" />
+        <option value="$PROJECT_DIR$/eurovision.c" />
       </list>
     </option>
   </component>
@@ -193,12 +190,12 @@
       <workItem from="1556789372958" duration="755000" />
       <workItem from="1556790157745" duration="379000" />
       <workItem from="1556806141320" duration="2480000" />
-      <workItem from="1556876237160" duration="615000" />
+      <workItem from="1556876237160" duration="1344000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="12041000" />
+    <option name="totallyTimeSpent" value="12770000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="704" extended-state="6" />
@@ -327,11 +324,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/eurovision.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4675">
-          <caret line="275" column="80" selection-start-line="275" selection-start-column="80" selection-end-line="275" selection-end-column="80" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="17">
+          <caret line="1" column="17" selection-start-line="1" selection-start-column="17" selection-end-line="1" selection-end-column="17" />
         </state>
       </provider>
     </entry>
