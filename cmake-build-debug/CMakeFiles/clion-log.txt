@@ -1,4 +1,0 @@
-"C:\Program Files\JetBrains\CLion 2018.3.4\bin\cmake\win\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" "E:\Documents\studies\technion\semester 4\CLion\eurovisionV4"
--- Configuring done
--- Generating done
--- Build files have been written to: E:/Documents/studies/technion/semester 4/CLion/eurovisionV4/cmake-build-debug
