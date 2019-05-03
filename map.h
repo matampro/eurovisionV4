@@ -2,8 +2,10 @@
 #define MAP_H_
 
 #include <stdbool.h>
-#define LOG  printf(" testAddState %d  %s\n", __LINE__,__FILE__ );
-
+#define LOG  //printf("testAddState %d  %s\n", __LINE__,__FILE__ );
+#define LOG1  //printf("MapPut %d  %s\n", __LINE__,__FILE__ );
+#define LOGC // printf("MapCOPY %d \n", __LINE__ );
+#define LOGR  //printf("MAP remove %d  %s\n", __LINE__,__FILE__ );
 /**
 * Generic Map Container
 *
@@ -107,6 +109,9 @@ Map mapCreate(copyMapDataElements copyDataElement,
 * 		done
 */
 void mapDestroy(Map map);
+
+
+void mapPrint(Map map);
 
 /**
 * mapCopy: Creates a copy of target map.

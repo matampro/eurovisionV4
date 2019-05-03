@@ -11,7 +11,7 @@
 
 #define CHECK(b,res)                            \
   if((b) != (res)) do{                          \
-      printf("fail: %s != %s\n", #b, #res);     \
+      printf("fail: %s != %s ret \n", #b, #res);     \
       eurovisionDestroy(eurovision);            \
       return false;                             \
     } while(0)
@@ -170,16 +170,22 @@ bool testAddState() {
   CHECK(eurovisionAddState(eurovision, 0, "israel", "home"), EUROVISION_SUCCESS);
     LOG
     printf("3\n");
+    //mapPrint(eurovision->state);
   CHECK(eurovisionAddState(eurovision, 1, "malta", "chameleon"), EUROVISION_SUCCESS);
     printf("4\n");
+   //   mapPrint(eurovision->state);
     LOG
   CHECK(eurovisionAddState(eurovision, 0, "croatia", "the dream"), EUROVISION_STATE_ALREADY_EXIST);
     printf("5\n");
+    //  mapPrint(eurovision->state);
     LOG
   CHECK(eurovisionAddState(eurovision, 0, "israel", "home"), EUROVISION_STATE_ALREADY_EXIST);
    LOG
+  printf("6\n");
   CHECK(eurovisionAddState(eurovision, -1, "croatia", "the dream"), EUROVISION_INVALID_ID);
   LOG
+  printf("7 destroy \n");
+
   eurovisionDestroy(eurovision);
   return true;
 }
@@ -187,10 +193,19 @@ bool testAddState() {
 bool testRemoveState() {
   Eurovision eurovision = setupEurovision();
   setupEurovisionStates(eurovision);
+  //mapPrint(eurovision->state);
   CHECK(eurovisionRemoveState(eurovision, 24), EUROVISION_STATE_NOT_EXIST);
+  LOGR
   CHECK(eurovisionRemoveState(eurovision, -1), EUROVISION_INVALID_ID);
-  CHECK(eurovisionRemoveState(eurovision, 1), EUROVISION_SUCCESS);
-  CHECK(eurovisionRemoveState(eurovision, 1), EUROVISION_STATE_NOT_EXIST);
+  LOGR
+
+
+ // printf("final result is result %d\n\n", eurovisionRemoveState(eurovision, 1));
+ CHECK(eurovisionRemoveState(eurovision, 1), EUROVISION_SUCCESS);
+  LOGR
+
+  CHECK(eurovisionRemoveState(eurovision,1), EUROVISION_STATE_NOT_EXIST);
+  LOGR
   eurovisionDestroy(eurovision);
   return true;
 }
@@ -199,19 +214,25 @@ bool testAddJudge() {
   int *results;
   Eurovision eurovision = setupEurovision();
   setupEurovisionStates(eurovision);
+  LOGJ
   CHECK(eurovisionAddJudge(eurovision, -1, "olsen", NULL), EUROVISION_NULL_ARGUMENT);
   results = makeJudgeResults(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+  LOGJ
   CHECK_WITH_FREE(eurovisionAddJudge(eurovision, -1, "olsen", results), EUROVISION_INVALID_ID, results);
+  LOGJ
   CHECK_WITH_FREE(eurovisionAddJudge(eurovision, 0, "olsen", results), EUROVISION_SUCCESS, results);
+  LOGJ
   free(results);
   results = makeJudgeResults(0, 1, -2, -3, 4, 5, 6, 7, 8, -9);
   CHECK_WITH_FREE(eurovisionAddJudge(eurovision, 1, "tanel", results), EUROVISION_INVALID_ID, results);
+
   free(results);
   results = makeJudgeResults(100, 1, 2, 3, 4, 5, 6, 7, 8, 9);
   CHECK_WITH_FREE(eurovisionAddJudge(eurovision, 1, "tanel", results), EUROVISION_STATE_NOT_EXIST, results);
   free(results);
   results = makeJudgeResults(14, 13, 10, 8, 4, 5, 6, 15, 0, 2);
   CHECK_WITH_FREE(eurovisionAddJudge(eurovision, 1, "tanel", results), EUROVISION_SUCCESS, results);
+
   CHECK_WITH_FREE(eurovisionAddJudge(eurovision, 1, "marie", results), EUROVISION_JUDGE_ALREADY_EXIST, results);
   CHECK_WITH_FREE(eurovisionAddJudge(eurovision, 2, "marie", results), EUROVISION_SUCCESS, results);
   free(results);
@@ -224,8 +245,12 @@ bool testRemoveJudge() {
   setupEurovisionStates(eurovision);
   setupEurovisionJudges(eurovision);
   CHECK(eurovisionRemoveJudge(eurovision, -1), EUROVISION_INVALID_ID);
+  LOGJ
   CHECK(eurovisionRemoveJudge(eurovision, 5), EUROVISION_JUDGE_NOT_EXIST);
+  LOGJ
   CHECK(eurovisionRemoveJudge(eurovision, 0), EUROVISION_SUCCESS);
+  LOGJ
+  printf("-------------------------------------------------\n\n\n");
   CHECK(eurovisionRemoveJudge(eurovision, 0), EUROVISION_JUDGE_NOT_EXIST);
   eurovisionDestroy(eurovision);
   return true;
