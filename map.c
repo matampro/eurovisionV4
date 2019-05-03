@@ -109,9 +109,10 @@ int mapGetSize(Map map){
 }
 
 bool mapContains(Map map, MapKeyElement element){
-    if((map == NULL) || (element == NULL)){
+    if((map == NULL) || (element == NULL) || (map->head == NULL)){  // check also that map->head is not NULL
         return false;
     }
+    map->tail = map->head;                                          // map->tail needs to start from head
     while (map->tail->next != NULL){
         if (map->tail->mapKeyElement == element){
             return true;
@@ -149,6 +150,9 @@ void addNewNodeAfterNode(Node new_node ,Node previousNode) {
 MapResult mapPut(Map map, MapKeyElement keyElement, MapDataElement dataElement) {
     if((map == NULL) || (keyElement == NULL)|| (dataElement == NULL)){
         return MAP_OUT_OF_MEMORY;
+    }
+    if (mapContains(map, keyElement)){
+        return MAP_ITEM_ALREADY_EXISTS;
     }
     Node new_node=NULL;
     if(map->head == NULL){                    //first node in the list

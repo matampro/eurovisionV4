@@ -1,5 +1,6 @@
-#include <stdio.h>
 #include "eurovision.h"
+#include "list.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <assert.h>
@@ -9,12 +10,17 @@
 #define NUMBER_OF_RESULTS 10
 #define MAX_NUMBER_OF_WINNERS 10
 #define TOTAL_PRECENT 100
-#define FIRST_ROW 0
-#define SECEND_ROW 1
+
 
 
 List makeSortedListByMapData(Map map);
 void printResult(List list);
+char* createStr (char* str1, char* str2);
+ListElement copyFriendly(ListElement);
+void freeFriendly(ListElement);
+int compareFriendly(ListElement , ListElement);
+
+
 int place[MAX_NUMBER_OF_WINNERS] = {12, 10, 8, 7, 6, 5, 4, 3, 2, 1};
 
 char* stringCopy(const char* str) {
@@ -194,11 +200,12 @@ bool checkIfNameIsLegal(const char *name){
     return true;
 }
 
-EurovisionResult eurovisionAddState(Eurovision eurovision, int stateId, const char *stateName, const char *songName)
-{
-    if(!checkIfNotNegitive(stateId)){
+EurovisionResult eurovisionAddState(Eurovision eurovision, int stateId, const char *stateName, const char *songName){
+    if (eurovision == NULL){
+        return EUROVISION_NULL_ARGUMENT;
+    } else if (!checkIfNotNegitive(stateId)){
         return EUROVISION_INVALID_ID;
-    } else if(mapContains(eurovision->state, &stateId)){
+    } else if (mapContains(eurovision->state, &stateId)){
         return EUROVISION_STATE_ALREADY_EXIST;
     }else if( !checkIfNameIsLegal(stateName) || !checkIfNameIsLegal(songName)){
         return EUROVISION_INVALID_NAME;
@@ -222,14 +229,21 @@ EurovisionResult eurovisionAddState(Eurovision eurovision, int stateId, const ch
             eurovisionDestroy(eurovision);
             return EUROVISION_OUT_OF_MEMORY;
         }
-        void* result = mapCreate(copyVoteDataElement,copyKeyElement,freeVoteDataElement,freeKeyElement,                  //where goes the pointer of mapCreate?
+        Map citizenVote = mapCreate(copyVoteDataElement,copyKeyElement,freeVoteDataElement,freeKeyElement,
                                  compareKeyElements);
-        if(result == NULL) {
+        if(citizenVote == NULL) {
             freeStateData(newStateData);
             free(newStateData);
             eurovisionDestroy(eurovision);
             return EUROVISION_OUT_OF_MEMORY;
         }else{
+            MapResult mapResult = mapPut(eurovision->state, &stateId, newStateData);  //we have to add a new map to the *state
+            if(mapResult == MAP_OUT_OF_MEMORY) {
+                freeStateData(newStateData);
+                free(newStateData);
+                eurovisionDestroy(eurovision);
+                return EUROVISION_OUT_OF_MEMORY;
+            }
             return EUROVISION_SUCCESS;
         }
     }
@@ -501,17 +515,15 @@ void printResult(List list) {
     if (next_winner == NULL) {
         return;
     } else {
-        printf( "%s", &next_winner);
+        printf( "%s\n", next_winner);
     }
+    next_winner = listGetNext(list);
     while (next_winner != NULL) {
-        char *next_winner = listGetNext(list);
-        if (next_winner == NULL) {
-            return;
-        } else {
-            printf( "%s", &next_winner);
-        }
+        printf( "%s\n", next_winner);
+        next_winner = listGetNext(list);
     }
 }
+
 
 List eurovisionRunAudienceFavorite(Eurovision eurovision) {
     int number_of_voted_states = MAX_NUMBER_OF_WINNERS;
@@ -574,6 +586,7 @@ List eurovisionRunGetFriendlyStates(Eurovision eurovision) {
     if (eurovision == NULL) {
         return NULL;
     }
+<<<<<<< HEAD
     int numState = 0;
     numState = mapGetSize(eurovision->state);
     if (numState > 0) {
@@ -608,11 +621,90 @@ List eurovisionRunGetFriendlyStates(Eurovision eurovision) {
             for(int j=0; j< numState ;j++){
                 if((friendlyState[FIRST_ROW][j] == firstChoice) &&
                                                         (friendlyState[SECEND_ROW][j] == friendlyState[FIRST_ROW][i])){
-
-                }
-            }
+=======
+    Map friendlyMap = mapCreate(copyVoteDataElement, copyKeyElement, freeVoteDataElement, freeKeyElement,
+                                compareKeyElements);      // we count the score here
+    if (friendlyMap == NULL) {
+        return NULL;
+    }
+    int initData = 0;
+    KeyElement keyElement = mapGetFirst(eurovision->state);
+    MapResult result = mapPut(friendlyMap, keyElement, &initData); //we set first state
+    if (result == MAP_OUT_OF_MEMORY) {
+        return NULL;
+    }
+    while (mapGetNext(eurovision->state) != NULL) {
+        keyElement = mapGetFirst(eurovision->state);
+        result = mapPut(friendlyMap, keyElement, &initData); //we set rest of the states
+        if (result == MAP_OUT_OF_MEMORY) {
+            return NULL;
         }
+    }
+>>>>>>> f4a83050e304c2d032d4752194c4f334758c1b0d
+
+    MAP_FOREACH(int *, iterator, eurovision->state) {
+        StateData stateData = mapGet(eurovision->state, iterator);
+        if (stateData == NULL) {
+            return NULL;
+        }
+<<<<<<< HEAD
 
     }
 
 }
+=======
+        Map citizenVote = stateData->citizenVote;
+        List current_list = NULL;
+        current_list = makeSortedListByMapData(citizenVote);
+        if (current_list == NULL) {
+            return NULL;
+        }
+        result = mapPut(friendlyMap, iterator, listGetFirst(current_list));
+        if (result == MAP_OUT_OF_MEMORY) {
+            return NULL;
+        }
+    }
+    List friendlyList = listCreate(copyFriendly, freeFriendly);
+    if (friendlyList == NULL) {
+        return NULL;
+    }
+    MAP_FOREACH(int *, iterator, friendlyMap) {
+        if (mapGet(friendlyMap, mapGet(friendlyMap, iterator)) == iterator) {  //the countries voted for each other
+            StateData stateData1 = mapGet(eurovision->state, iterator);
+            StateData stateData2 = mapGet(eurovision->state, mapGet(friendlyMap, iterator));
+            char *friendlyStr = createStr(stateData1->stateName, stateData2->stateName);
+            listInsertFirst(friendlyList, friendlyStr);
+       }
+    }
+    ListResult listResult = listSort(friendlyList, compareFriendly);
+    if (listResult == LIST_OUT_OF_MEMORY || listResult == LIST_NULL_ARGUMENT){
+        return NULL;
+    }
+}
+
+char* createStr(char* str1, char* str2) {
+    if (strcmp(str1, str2) > 0){
+        char* str_to_return = malloc(sizeof(str1) + sizeof(str2) + 1 + 1);
+        if (str_to_return == NULL)
+            return NULL;
+        return str_to_return;
+    }
+}
+
+ListElement copyFriendly(ListElement str){
+    return stringCopy(str);
+}
+void freeFriendly(ListElement str) {
+    free(str);
+}
+int compareFriendly(ListElement str1, ListElement str2){
+    if (strcmp(str1, str2) == 0){
+        return 0;
+    }
+    return ((strcmp(str1, str2) > 0) ? -1 : 1 );
+}
+
+
+
+
+>>>>>>> f4a83050e304c2d032d4752194c4f334758c1b0d
