@@ -1,3 +1,0 @@
-E:/Documents/studies/technion/semester 4/CLion/eurovisionV4/cmake-build-debug/CMakeFiles/eurovisionV4.dir
-E:/Documents/studies/technion/semester 4/CLion/eurovisionV4/cmake-build-debug/CMakeFiles/edit_cache.dir
-E:/Documents/studies/technion/semester 4/CLion/eurovisionV4/cmake-build-debug/CMakeFiles/rebuild_cache.dir

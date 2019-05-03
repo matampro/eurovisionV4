@@ -569,6 +569,7 @@ List eurovisionRunAudienceFavorite(Eurovision eurovision) {
     printResult(winnersList);
 }
 
+
 List eurovisionRunGetFriendlyStates(Eurovision eurovision) {
     if (eurovision == NULL) {
         return NULL;
@@ -601,9 +602,8 @@ List eurovisionRunGetFriendlyStates(Eurovision eurovision) {
                 }
 
             }
-            }
         }
-        for(int i=0; i <=(numState/2) ; i++){
+        for(int i=0; i <numState; i++){
             int firstChoice = friendlyState[SECEND_ROW][i];
             for(int j=0; j< numState ;j++){
                 if((friendlyState[FIRST_ROW][j] == firstChoice) &&
@@ -612,4 +612,7 @@ List eurovisionRunGetFriendlyStates(Eurovision eurovision) {
                 }
             }
         }
+
     }
+
+}
