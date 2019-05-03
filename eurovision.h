@@ -6,8 +6,10 @@
 
 #define LOG  //printf(" testAddState %d  %s\n", __LINE__,__FILE__ );
 #define LOGR  //printf(" testremoveState %d  %s\n", __LINE__,__FILE__ );
-#define LOGJ  printf(" testremoveState %d  %s\n", __LINE__,__FILE__ );
-
+#define LOGJ // printf(" testremoveState %d  %s\n", __LINE__,__FILE__ );
+#define LOG4  printf(" testremoveState %d  %s\n", __LINE__,__FILE__ );
+#define LOGINE  printf(" ---------------------------------------------------------------------\n\n" );
+#define LOG5 printf(" contest %d  %s\n", __LINE__,__FILE__ );
 /**
 * Eurovision management program
 

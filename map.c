@@ -113,12 +113,21 @@ Map mapCopy(Map map){
         return NULL;
     }
     LOGC
- //  *new_map = *map;
+//  *new_map = *map;
 //    new_map->head = malloc(sizeof(*new_map->head ));
 //    if (new_map->head == NULL){
 //        mapDestroy(new_map);
 //        return NULL;
 //    }
+
+            /// must copy fuctions as well
+       new_map->compair_key = map->compair_key;
+        new_map->data_copy= map->data_copy;
+        new_map->counter=map->counter;
+        new_map->free_data=map->free_data;
+        new_map->free_key=map->free_key;
+        new_map->key_copy=map->key_copy;
+
     new_map->head = NULL;
     LOGC
     new_map->tail = new_map->head;
@@ -207,11 +216,12 @@ MapResult createNewNode(Node *new_node,MapKeyElement keyElement, MapDataElement 
     if (*new_node == NULL) {
         return MAP_OUT_OF_MEMORY;
     }else{
-         LOGJ
+         LOG4
+         printf("function copy data %p  %d\n",map->data_copy,*(int*)dataElement);
         (*new_node)->mapDataElement = map->data_copy (dataElement);
-          LOGJ
+          LOG4
         (*new_node)->mapKeyElement = map->key_copy(keyElement);
-           LOGJ
+           LOG4
         (*new_node)->next = NULL;
     }
     return MAP_SUCCESS;
@@ -222,7 +232,7 @@ void addNewNodeAfterNode(Node new_node ,Node previousNode) {
     new_node->next =  temp;
 }
 MapResult mapPut(Map map, MapKeyElement keyElement, MapDataElement dataElement) {
-
+printf("has function %p\n", map->data_copy);
     if((map == NULL) || (keyElement == NULL)|| (dataElement == NULL)){
         return MAP_OUT_OF_MEMORY;
     }
@@ -231,11 +241,11 @@ MapResult mapPut(Map map, MapKeyElement keyElement, MapDataElement dataElement) 
     }
     Node new_node=NULL;
     if(map->head == NULL){                    //first node in the list
-        LOGJ
+        LOG4
         if (createNewNode(&new_node, keyElement, dataElement,map) == MAP_OUT_OF_MEMORY) {
             return MAP_OUT_OF_MEMORY;
         } else {
-            LOGJ
+            LOG4
             map->counter++;
             map->head=new_node;
             map->tail=map->head;
@@ -245,14 +255,14 @@ MapResult mapPut(Map map, MapKeyElement keyElement, MapDataElement dataElement) 
 
     Node prevNode=map->head;
     for (map->tail = map->head; map->tail != NULL ; map->tail = map->tail->next) {
-        LOGJ
+        LOG4
         if (map->compair_key(map->tail->mapKeyElement, keyElement) == 0) {//swap data
             map->tail->mapDataElement = map->data_copy(dataElement);
             map->tail->mapKeyElement = map->key_copy(keyElement);
             return MAP_SUCCESS;
         }
         if (map->compair_key(keyElement ,map->tail->mapKeyElement ) < 0) {//middle before this object
-            LOGJ
+            LOG4
             if (createNewNode(&new_node, keyElement, dataElement,map) == MAP_OUT_OF_MEMORY) {
                 return MAP_OUT_OF_MEMORY;
             } else {
@@ -264,9 +274,9 @@ MapResult mapPut(Map map, MapKeyElement keyElement, MapDataElement dataElement) 
         prevNode = map->tail;
       }
         map->tail=prevNode;
-        LOGJ
+        LOG4
         if (map->compair_key( keyElement,map->tail->mapKeyElement) > 0){
-            LOGJ
+            LOG4
             if (createNewNode(&new_node, keyElement, dataElement,map) == MAP_OUT_OF_MEMORY) { /// end of list
                 return MAP_OUT_OF_MEMORY;
             } else {
@@ -275,7 +285,7 @@ MapResult mapPut(Map map, MapKeyElement keyElement, MapDataElement dataElement) 
                 return MAP_SUCCESS;
             }
         }
-        LOGJ
+        LOG4
         return MAP_OUT_OF_MEMORY;  //should not get here
 }
 
@@ -297,26 +307,44 @@ MapResult mapRemove(Map map, MapKeyElement keyElement) {
     }
     LOGJ
 
-    printf("***************************************************\n");
     ///protection againt empty case
     if(map->head ==NULL){
         LOGJ
         return MAP_SUCCESS;
     }
     int flag = 0; // We check if the item is found//
+    Node prev = map->head;
     for (map->tail = map->head; map->tail->next != NULL ; map->tail = map->tail->next) {
         LOGJ
         if (map->compair_key(map->tail->mapKeyElement, keyElement) == 0) {
             flag = 1;
-            LOGJ
+
             Node tmp = map->tail->next;
+            if( map->head == map->tail)
+            {
+               map->head = tmp;
+            }
+            prev->next = tmp;
             map->free_data(map->tail->mapDataElement);
             map->free_key(map->tail->mapKeyElement);
             free(map->tail);
             map->tail = tmp;
+
             map->counter--;
+            break;
         }
     }
+    if (map->compair_key(map->tail->mapKeyElement, keyElement) == 0) {
+        flag = 1;
+        Node tmp = map->tail->next;
+        map->free_data(map->tail->mapDataElement);
+        map->free_key(map->tail->mapKeyElement);
+        free(map->tail);
+        map->tail = tmp;
+        map->counter--;
+
+    }
+
     if(flag == 1){
         LOGJ
         return MAP_SUCCESS;   //  how can we know that it went well?
@@ -335,6 +363,8 @@ MapKeyElement mapGetFirst(Map map) {
         return NULL;
     }
     map->tail = map->head;
+    /// two function are colliding here map get next
+    ///points to next and mapGetFirst return to status
     return  map->tail->mapKeyElement;
 }
 

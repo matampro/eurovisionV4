@@ -245,12 +245,11 @@ bool testRemoveJudge() {
   setupEurovisionStates(eurovision);
   setupEurovisionJudges(eurovision);
   CHECK(eurovisionRemoveJudge(eurovision, -1), EUROVISION_INVALID_ID);
-  LOGJ
+
   CHECK(eurovisionRemoveJudge(eurovision, 5), EUROVISION_JUDGE_NOT_EXIST);
-  LOGJ
+
   CHECK(eurovisionRemoveJudge(eurovision, 0), EUROVISION_SUCCESS);
-  LOGJ
-  printf("-------------------------------------------------\n\n\n");
+
   CHECK(eurovisionRemoveJudge(eurovision, 0), EUROVISION_JUDGE_NOT_EXIST);
   eurovisionDestroy(eurovision);
   return true;
@@ -259,11 +258,24 @@ bool testRemoveJudge() {
 bool testAddVote() {
   Eurovision eurovision = setupEurovision();
   setupEurovisionStates(eurovision);
+  LOG4
+  LOGINE
   CHECK(eurovisionAddVote(eurovision, -1, 12), EUROVISION_INVALID_ID);
+  LOG4
+          LOGINE
   CHECK(eurovisionAddVote(eurovision, 12, -1), EUROVISION_INVALID_ID);
+  LOG4
+          LOGINE
   CHECK(eurovisionAddVote(eurovision, 100, 12), EUROVISION_STATE_NOT_EXIST);
+  LOG4
+          LOGINE
   CHECK(eurovisionAddVote(eurovision, 12, 100), EUROVISION_STATE_NOT_EXIST);
+  LOG4
+          LOGINE
+
   CHECK(eurovisionAddVote(eurovision, 12, 1), EUROVISION_SUCCESS);
+  LOG4
+
   eurovisionDestroy(eurovision);
   return true;
 }
@@ -308,20 +320,27 @@ bool testRunContest() {
   setupEurovisionStates(eurovision);
   setupEurovisionJudges(eurovision);
   setupEurovisionVotes2(eurovision);
+  LOG5
 
   List ranking = eurovisionRunContest(eurovision, 40);
+   LOG5
   CHECK(listGetSize(ranking), 16);
+   LOG5
   char *current = (char*)listGetFirst(ranking);
+    LOG5
   CHECK(strcmp(current, "united kingdom"), 0);
   current = (char*)listGetNext(ranking);
+   LOG5
   CHECK(strcmp(current, "moldova"), 0);
   current = (char*)listGetNext(ranking);
   CHECK(strcmp(current, "russia"), 0);
+   LOG5
   current = (char*)listGetNext(ranking);
   CHECK(strcmp(current, "cyprus"), 0);
+   LOG5
   current = (char*)listGetNext(ranking);
   CHECK(strcmp(current, "spain"), 0);
-
+ LOG5
   listDestroy(ranking);
   eurovisionDestroy(eurovision);
   return true;
