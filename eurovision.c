@@ -1,10 +1,10 @@
-#include <stdio.h>
 #include "eurovision.h"
+#include "list.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <assert.h>
 #include <string.h>
-#include "list.h"
 
 
 #define NUMBER_OF_RESULTS 10
