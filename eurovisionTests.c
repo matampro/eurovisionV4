@@ -166,11 +166,20 @@ static void setupEurovisionVotes2(Eurovision eurovision) {
 
 bool testAddState() {
   Eurovision eurovision = setupEurovision();
+    LOG
   CHECK(eurovisionAddState(eurovision, 0, "israel", "home"), EUROVISION_SUCCESS);
+    LOG
+    printf("3\n");
   CHECK(eurovisionAddState(eurovision, 1, "malta", "chameleon"), EUROVISION_SUCCESS);
+    printf("4\n");
+    LOG
   CHECK(eurovisionAddState(eurovision, 0, "croatia", "the dream"), EUROVISION_STATE_ALREADY_EXIST);
+    printf("5\n");
+    LOG
   CHECK(eurovisionAddState(eurovision, 0, "israel", "home"), EUROVISION_STATE_ALREADY_EXIST);
+   LOG
   CHECK(eurovisionAddState(eurovision, -1, "croatia", "the dream"), EUROVISION_INVALID_ID);
+  LOG
   eurovisionDestroy(eurovision);
   return true;
 }

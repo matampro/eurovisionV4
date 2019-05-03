@@ -2,7 +2,7 @@
 #define MAP_H_
 
 #include <stdbool.h>
-
+#define LOG  printf(" testAddState %d  %s\n", __LINE__,__FILE__ );
 
 /**
 * Generic Map Container

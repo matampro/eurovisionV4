@@ -2,6 +2,7 @@
 #define EUROVISIONTESTS_H_
 
 #include <stdbool.h>
+#include <stdio.h>
 bool testAddState();
 bool testRemoveState();
 bool testAddJudge();

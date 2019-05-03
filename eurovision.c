@@ -27,8 +27,8 @@ char* stringCopy(const char* str) {
     if(str == NULL){
         return NULL;
     }
-    int strLen =strlen(str);
-    char *strDest = malloc(sizeof(strLen + 1));
+    size_t strLength =strlen(str);
+    char *strDest = malloc(sizeof(strLength + 1));
     if (strDest == NULL) {
         return NULL;
     } else {
@@ -68,10 +68,18 @@ static StateDataMap copyStateData(StateDataMap dataToCopy){
 }
 /** Function to be used by the map for freeing elements */
 static void freeStateData(StateDataMap dataToFree) {
+    LOG
     StateData toFree = (StateData) dataToFree;
+    if(toFree==NULL)
+        printf("NULL ");
+    LOG
+
     free(toFree->stateName);
+    LOG
     free(toFree->songName);
+    LOG
     mapDestroy(toFree->citizenVote);
+    LOG
 }
 
 
@@ -175,7 +183,9 @@ Eurovision eurovisionCreate(){
 }
 
 void eurovisionDestroy(Eurovision eurovision){
+    LOG
     mapDestroy(eurovision->state);
+    LOG
     mapDestroy(eurovision->judge);
 }
 
@@ -189,32 +199,46 @@ bool checkIfNotNegitive(int num){
 }
 
 bool checkIfNameIsLegal(const char *name){
-    char *copyName = stringCopy(name);
+    char *copyNameOriginal = stringCopy(name); /// free from middle of string need to read about behavier but not stable
+    char *copyName = copyNameOriginal;
+    if(copyName == NULL)
+    {
+       free(copyNameOriginal);
+       return false;
+    }
+
     while (*copyName != '\0'){
-        if(((*copyName <= 'a') || (*copyName >= 'z')) && *copyName != ' '){
-            free(copyName);
+        if(((*copyName < 'a') || (*copyName > 'z')) && *copyName != ' '){
+            printf (" %c \n", *copyName);
+            free(copyNameOriginal);
             return false;
         }
+
+        copyName++; //bug no addition to pointer
     }
-    free(copyName);
+    free(copyNameOriginal);
     return true;
 }
 
 EurovisionResult eurovisionAddState(Eurovision eurovision, int stateId, const char *stateName, const char *songName){
+  LOG
     if (eurovision == NULL){
         return EUROVISION_NULL_ARGUMENT;
     } else if (!checkIfNotNegitive(stateId)){
         return EUROVISION_INVALID_ID;
     } else if (mapContains(eurovision->state, &stateId)){
+        LOG
         return EUROVISION_STATE_ALREADY_EXIST;
     }else if( !checkIfNameIsLegal(stateName) || !checkIfNameIsLegal(songName)){
         return EUROVISION_INVALID_NAME;
     }else{
+        LOG
         StateData newStateData = (StateData) malloc(sizeof(*newStateData));
         if(newStateData == NULL){
             eurovisionDestroy(eurovision);
             return EUROVISION_OUT_OF_MEMORY;
         }
+          LOG
         newStateData->stateName = stringCopy(stateName);
         if(newStateData->stateName == NULL){
             freeStateData(newStateData);
@@ -222,6 +246,7 @@ EurovisionResult eurovisionAddState(Eurovision eurovision, int stateId, const ch
             eurovisionDestroy(eurovision);
             return EUROVISION_OUT_OF_MEMORY;
         }
+          LOG
         newStateData->songName = stringCopy(songName);
         if(newStateData->songName == NULL){
             freeStateData(newStateData);
@@ -229,8 +254,10 @@ EurovisionResult eurovisionAddState(Eurovision eurovision, int stateId, const ch
             eurovisionDestroy(eurovision);
             return EUROVISION_OUT_OF_MEMORY;
         }
+          LOG
         Map citizenVote = mapCreate(copyVoteDataElement,copyKeyElement,freeVoteDataElement,freeKeyElement,
                                  compareKeyElements);
+            LOG
         if(citizenVote == NULL) {
             freeStateData(newStateData);
             free(newStateData);
@@ -244,7 +271,9 @@ EurovisionResult eurovisionAddState(Eurovision eurovision, int stateId, const ch
                 eurovisionDestroy(eurovision);
                 return EUROVISION_OUT_OF_MEMORY;
             }
+            LOG
             return EUROVISION_SUCCESS;
+
         }
     }
 }

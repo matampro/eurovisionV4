@@ -109,12 +109,15 @@ int mapGetSize(Map map){
 }
 
 bool mapContains(Map map, MapKeyElement element){
+    LOG
     if((map == NULL) || (element == NULL) || (map->head == NULL)){  // check also that map->head is not NULL
         return false;
     }
+    LOG
     map->tail = map->head;                                          // map->tail needs to start from head
+    LOG
     while (map->tail->next != NULL){
-        if (map->tail->mapKeyElement == element){
+        if(map->compair_key(map->tail->mapKeyElement , element)== 0 ){ /// you dont know the tyme of key element so == makes no sence
             return true;
         }
         map->tail = map->tail->next;
@@ -122,8 +125,8 @@ bool mapContains(Map map, MapKeyElement element){
     if (map->tail->mapKeyElement == element){    //check last node
         return true;
     }
-
-    return false;
+    LOG
+        return false;
 }
 
 
