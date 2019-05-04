@@ -24,11 +24,12 @@ int main(int argc, char *argv[]) {
 //            printf("after %d\n",__LINE__);
   //TEST(testRemoveVote)
 //            printf("after %d\n",__LINE__);
-   TEST(testRunContest)
+  // TEST(testRunContest)
 //            printf("after %d\n",__LINE__);
-//    TEST(testRunAudienceFavorite)
+
+    TEST(testRunAudienceFavorite)
 //            printf("after %d\n",__LINE__);
-//    TEST(testRunGetFriendlyStates)
+    TEST(testRunGetFriendlyStates)
 //            printf("after %d\n",__LINE__);
     return 0;
 }

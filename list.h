@@ -161,10 +161,10 @@ int listGetSize(List list);
 /**
 * Sets the internal iterator to the first element and retrieves it.
 *
-* The l
-* Use this to start iteraing over the list, searching ist has an internal iterator (also called current element) to allow
+* The list has an internal iterator (also called current element) to allow
 * iteration over the list's elements. This function sets the iterator to point
-* to the first element in the list and return it.from the beginning of
+* to the first element in the list and return it.
+* Use this to start iteraing over the list, searching from the beginning of
 * the list and/or get the first element in the list.
 * (To continue iteration use listGetNext)
 * @code

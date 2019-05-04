@@ -131,7 +131,8 @@ Map mapCopy(Map map){
     new_map->head = NULL;
     LOGC
     new_map->tail = new_map->head;
-map->tail = map->head;
+    Node iter;
+iter = map->head;
 if(map->head == NULL)
 {
     LOGC
@@ -146,8 +147,8 @@ if(map->head == NULL)
     /// new_map-> head is created but the next is never assinget to anthing
     /// new_map->head->next is garbage
     for (;
-          map->tail->next != NULL
-        ; map->tail = map->tail->next){
+          iter->next != NULL
+        ; iter = iter->next){
         LOGC
         Node next_node = malloc(sizeof(*next_node));
         if (next_node == NULL){
@@ -156,8 +157,8 @@ if(map->head == NULL)
         }
         LOGC
         new_map->tail = next_node;
-        new_map->tail->mapKeyElement = map->key_copy(map->tail->mapKeyElement);
-        new_map->tail->mapDataElement = map->data_copy(map->tail->mapDataElement);
+        new_map->tail->mapKeyElement = map->key_copy(iter->mapKeyElement);
+        new_map->tail->mapDataElement = map->data_copy(iter->mapDataElement);
         new_map->tail->next = NULL;
     }
     LOGC
@@ -168,8 +169,8 @@ if(map->head == NULL)
     }
     LOGC
     new_map->tail = next_node;
-    new_map->tail->mapKeyElement = map->key_copy(map->tail->mapKeyElement);
-    new_map->tail->mapDataElement = map->data_copy(map->tail->mapDataElement);
+    new_map->tail->mapKeyElement = map->key_copy(iter->mapKeyElement);
+    new_map->tail->mapDataElement = map->data_copy(iter->mapDataElement);
     new_map->tail->next = NULL;
     LOGC
     return new_map;
@@ -188,17 +189,18 @@ bool mapContains(Map map, MapKeyElement element){
         return false;
     }
     LOGJ
-    map->tail = map->head;                                          // map->tail needs to start from head
+    Node iter;
+    iter = map->head;                                          // iter needs to start from head
     LOGJ
-    while (map->tail->next != NULL){
-        if(map->compair_key(map->tail->mapKeyElement , element)== 0 ){ /// you dont know the tyme of key element so == makes no sence
+    while (iter->next != NULL){
+        if(map->compair_key(iter->mapKeyElement , element)== 0 ){ /// you dont know the tyme of key element so == makes no sence
            LOGJ
             return true;
         }
-        map->tail = map->tail->next;
+        iter = iter->next;
     }
     LOGJ
-     if(map->compair_key(map->tail->mapKeyElement , element)== 0 ){    //check last node
+     if(map->compair_key(iter->mapKeyElement , element)== 0 ){    //check last node
         return true;
     }
     LOGJ
@@ -233,6 +235,7 @@ void addNewNodeAfterNode(Node new_node ,Node previousNode) {
 }
 MapResult mapPut(Map map, MapKeyElement keyElement, MapDataElement dataElement) {
 //printf("has function %p\n", map->data_copy);
+    Node iter;
     printf("put %d in %d\n", *(int *)dataElement,*(int *)keyElement);
 
     if((map == NULL) || (keyElement == NULL)|| (dataElement == NULL)){
@@ -251,21 +254,21 @@ MapResult mapPut(Map map, MapKeyElement keyElement, MapDataElement dataElement) 
             LOG4
             map->counter++;
             map->head=new_node;
-            map->tail=map->head;
+            iter=map->head;
             return MAP_SUCCESS;
         }
     }
  printf("traverse \n");
     Node prevNode=map->head;
-    for (map->tail = map->head; map->tail != NULL ; map->tail = map->tail->next) {
+    for (iter = map->head; iter != NULL ; iter = iter->next) {
         LOG4
-        if (map->compair_key(map->tail->mapKeyElement, keyElement) == 0) {//swap data
+        if (map->compair_key(iter->mapKeyElement, keyElement) == 0) {//swap data
             printf("swap \n");
-            map->tail->mapDataElement = map->data_copy(dataElement);
-            map->tail->mapKeyElement = map->key_copy(keyElement);
+            iter->mapDataElement = map->data_copy(dataElement);
+            iter->mapKeyElement = map->key_copy(keyElement);
             return MAP_SUCCESS;
         }
-        if (map->compair_key(keyElement ,map->tail->mapKeyElement ) < 0) {//middle before this object
+        if (map->compair_key(keyElement ,iter->mapKeyElement ) < 0) {//middle before this object
             LOG4
             if (createNewNode(&new_node, keyElement, dataElement,map) == MAP_OUT_OF_MEMORY) {
                 return MAP_OUT_OF_MEMORY;
@@ -275,18 +278,18 @@ MapResult mapPut(Map map, MapKeyElement keyElement, MapDataElement dataElement) 
                 return MAP_SUCCESS;
             }
         }
-        prevNode = map->tail;
+        prevNode = iter;
       }
      printf("last node  \n");
-        map->tail=prevNode;
+        iter=prevNode;
         LOG4
-        if (map->compair_key( keyElement,map->tail->mapKeyElement) > 0){
+        if (map->compair_key( keyElement,iter->mapKeyElement) > 0){
             LOG4
             if (createNewNode(&new_node, keyElement, dataElement,map) == MAP_OUT_OF_MEMORY) { /// end of list
                 return MAP_OUT_OF_MEMORY;
             } else {
                 map->counter++;
-                addNewNodeAfterNode(new_node, map->tail);
+                addNewNodeAfterNode(new_node, iter);
                 return MAP_SUCCESS;
             }
         }
@@ -313,7 +316,7 @@ MapResult mapRemove(Map map, MapKeyElement keyElement) {
         return MAP_NULL_ARGUMENT;
     }
     LOGJ
-
+    Node iter;
     ///protection againt empty case
     if(map->head ==NULL){
         LOGJ
@@ -321,33 +324,37 @@ MapResult mapRemove(Map map, MapKeyElement keyElement) {
     }
     int flag = 0; // We check if the item is found//
     Node prev = map->head;
-    for (map->tail = map->head; map->tail->next != NULL ; map->tail = map->tail->next) {
+    for (iter = map->head; iter->next != NULL ; iter = iter->next) {
         LOGJ
-        if (map->compair_key(map->tail->mapKeyElement, keyElement) == 0) {
+        if (map->compair_key(iter->mapKeyElement, keyElement) == 0) {
             flag = 1;
 
-            Node tmp = map->tail->next;
-            if( map->head == map->tail)
+            Node tmp = iter->next;
+            if( map->head == iter)
             {
                map->head = tmp;
             }
+            if(iter==map->tail) // protecteion from losing tail locaiton
+                map->tail =tmp;
             prev->next = tmp;
-            map->free_data(map->tail->mapDataElement);
-            map->free_key(map->tail->mapKeyElement);
-            free(map->tail);
-            map->tail = tmp;
+            map->free_data(iter->mapDataElement);
+            map->free_key(iter->mapKeyElement);
+            free(iter);
+            iter = tmp;
 
             map->counter--;
             break;
         }
     }
-    if (map->compair_key(map->tail->mapKeyElement, keyElement) == 0) {
+    if (map->compair_key(iter->mapKeyElement, keyElement) == 0) {
         flag = 1;
-        Node tmp = map->tail->next;
-        map->free_data(map->tail->mapDataElement);
-        map->free_key(map->tail->mapKeyElement);
-        free(map->tail);
-        map->tail = tmp;
+        Node tmp = iter->next;
+        if(iter==map->tail) // protecteion from losing tail locaiton
+            map->tail =tmp;
+        map->free_data(iter->mapDataElement);
+        map->free_key(iter->mapKeyElement);
+        free(iter);
+        iter = tmp;
         map->counter--;
 
     }
