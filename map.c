@@ -217,7 +217,7 @@ MapResult createNewNode(Node *new_node,MapKeyElement keyElement, MapDataElement 
         return MAP_OUT_OF_MEMORY;
     }else{
          LOG4
-         printf("function copy data %p  %d\n",map->data_copy,*(int*)dataElement);
+//         printf("function copy data %p  %d\n",map->data_copy,*(int*)dataElement);
         (*new_node)->mapDataElement = map->data_copy (dataElement);
           LOG4
         (*new_node)->mapKeyElement = map->key_copy(keyElement);
@@ -232,13 +232,16 @@ void addNewNodeAfterNode(Node new_node ,Node previousNode) {
     new_node->next =  temp;
 }
 MapResult mapPut(Map map, MapKeyElement keyElement, MapDataElement dataElement) {
-printf("has function %p\n", map->data_copy);
+//printf("has function %p\n", map->data_copy);
+    printf("put %d in %d\n", *(int *)dataElement,*(int *)keyElement);
+
     if((map == NULL) || (keyElement == NULL)|| (dataElement == NULL)){
         return MAP_OUT_OF_MEMORY;
     }
-    if (mapContains(map, keyElement)){
-        return MAP_ITEM_ALREADY_EXISTS;
-    }
+//    if (mapContains(map, keyElement)){
+//        return MAP_ITEM_ALREADY_EXISTS;
+//    }
+
     Node new_node=NULL;
     if(map->head == NULL){                    //first node in the list
         LOG4
@@ -252,11 +255,12 @@ printf("has function %p\n", map->data_copy);
             return MAP_SUCCESS;
         }
     }
-
+ printf("traverse \n");
     Node prevNode=map->head;
     for (map->tail = map->head; map->tail != NULL ; map->tail = map->tail->next) {
         LOG4
         if (map->compair_key(map->tail->mapKeyElement, keyElement) == 0) {//swap data
+            printf("swap \n");
             map->tail->mapDataElement = map->data_copy(dataElement);
             map->tail->mapKeyElement = map->key_copy(keyElement);
             return MAP_SUCCESS;
@@ -273,6 +277,7 @@ printf("has function %p\n", map->data_copy);
         }
         prevNode = map->tail;
       }
+     printf("last node  \n");
         map->tail=prevNode;
         LOG4
         if (map->compair_key( keyElement,map->tail->mapKeyElement) > 0){
@@ -293,9 +298,11 @@ MapDataElement mapGet(Map map, MapKeyElement keyElement){
     if((map == NULL) || (keyElement == NULL)){
         return NULL;
     }
-    for (map->tail = map->head; map->tail != NULL ; map->tail = map->tail->next) {
-        if (map->compair_key(map->tail->mapKeyElement, keyElement) == 0){
-            return map->tail->mapDataElement;
+    /// again you cant use several function with tail !
+    Node iter;
+    for (iter = map->head; iter != NULL ; iter = iter->next) {
+        if (map->compair_key(iter->mapKeyElement, keyElement) == 0){
+            return iter->mapDataElement;
         }
     }
     return NULL;

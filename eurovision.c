@@ -313,10 +313,10 @@ EurovisionResult eurovisionAddState(Eurovision eurovision, int stateId, const ch
             eurovisionDestroy(eurovision);
             return EUROVISION_OUT_OF_MEMORY;
         }else{
-            printf(" =====++++++++has copy pont stateid %d %p \n",stateId,((Map_cheat)(citizenVote))->data_copy);
+//            printf(" =====++++++++has copy pont stateid %d %p \n",stateId,((Map_cheat)(citizenVote))->data_copy);
             newStateData->citizenVote = mapCopy(citizenVote);
 
-printf(" =====++++++++has copy pont stateid %d %p \n",stateId,((Map_cheat)(citizenVote))->data_copy);
+//printf(" =====++++++++has copy pont stateid %d %p \n",stateId,((Map_cheat)(citizenVote))->data_copy);
             printf("%d Adding state data -----%d-------%s----%s----%p\n",
                    __LINE__,stateId,newStateData->songName,newStateData->stateName);
             printf("  for the map has copy pont %p \n",((Map_cheat)(newStateData->citizenVote))->data_copy);
@@ -489,9 +489,11 @@ EurovisionResult eurovisionAddVote(Eurovision eurovision, int stateGiver, int st
     LOG4
 
     StateData stateData = (StateData) mapGet(eurovision->state, &stateGiver);
-   // printf(" =====++++++++has copy pont stateid %d %p \n",stateGiver,((Map_cheat)(stateData->citizenVote))->data_copy);
+ // printf(" =====++++++++has copy pont stateid %d %p \n",stateGiver,((Map_cheat)(stateData->citizenVote))->data_copy);
 
     void *votes = (void *) mapGet(stateData->citizenVote, &stateTaker);
+
+
     int numVotes;
     LOG4
     if (votes == NULL) {
@@ -512,7 +514,10 @@ EurovisionResult eurovisionAddVote(Eurovision eurovision, int stateGiver, int st
     } else {
         LOG4
         numVotes = *(int *) votes;
-        MapResult result = mapPut(stateData->citizenVote, &stateTaker, numVotes + 1);
+        numVotes++;
+        if(stateTaker == 2)
+            printf(" ===== %d %d \n",stateTaker,numVotes);
+        MapResult result = mapPut(stateData->citizenVote, &stateTaker, &numVotes );
         if (result == MAP_OUT_OF_MEMORY) {
             LOG4
             eurovisionDestroy(eurovision);
@@ -550,6 +555,43 @@ EurovisionResult eurovisionRemoveVote(Eurovision eurovision, int stateGiver, int
         }
         return EUROVISION_SUCCESS;
     }
+}
+List eurovisionRunContest1(Eurovision eurovision, int audiencePrecent) {
+    if ((eurovision == NULL) || (audiencePrecent < 1) || (audiencePrecent > 100)) {
+        return NULL;
+    }
+    /// create vote table of all state
+    int numberOfStates = mapGetSize( eurovision->state);
+    int* votesTables = (int *)malloc(sizeof(int)*numberOfStates * numberOfStates);
+    /// @todo add  check
+
+    memset(votesTables,sizeof(int)*numberOfStates * numberOfStates,0);
+
+      for(int * iterator = mapGetFirst(eurovision->state);iterator;iterator =mapGetNext(eurovision->state)){
+           StateData state = (StateData) mapGet(eurovision->state,iterator);
+
+       for(int * iterVotes = mapGetFirst(state->citizenVote);iterVotes;iterVotes = mapGetNext(state->citizenVote))
+        {
+               int votesCast=*(int*)mapGet(state->citizenVote,iterVotes);
+               printf(" state %d gives %d votes: %d \n",*iterator,*iterVotes,votesCast);
+
+               votesTables[*iterator * numberOfStates + *iterVotes] = votesCast;
+           }
+      }
+      for(int i=0;i<numberOfStates ;i++)
+      {
+          for(int j=0;j<numberOfStates ;j++)
+          {
+            printf(" %d ",votesTables[i*numberOfStates+ j]);
+          }
+          printf("\n");
+      }
+
+
+
+
+
+
 }
 
 List eurovisionRunContest(Eurovision eurovision, int audiencePrecent) {
@@ -640,7 +682,8 @@ List eurovisionRunContest(Eurovision eurovision, int audiencePrecent) {
     printResult(winnersList);
 }
 
-List makeSortedListByMapData(Map map){
+List makeSortedListByMapData(Map map)
+{
     List list = listCreate(copyKeyElement, freeKeyElement);
     if (list == NULL) {
         return NULL;

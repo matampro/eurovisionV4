@@ -322,7 +322,7 @@ bool testRunContest() {
   setupEurovisionVotes2(eurovision);
   LOG5
 
-  List ranking = eurovisionRunContest(eurovision, 40);
+  List ranking = eurovisionRunContest1(eurovision, 40);
    LOG5
   CHECK(listGetSize(ranking), 16);
    LOG5
