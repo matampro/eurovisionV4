@@ -27,9 +27,9 @@ int main(int argc, char *argv[]) {
   // TEST(testRunContest)
 //            printf("after %d\n",__LINE__);
 
-    TEST(testRunAudienceFavorite)
+    //TEST(testRunAudienceFavorite)
 //            printf("after %d\n",__LINE__);
-    TEST(testRunGetFriendlyStates)
+  TEST(testRunGetFriendlyStates)
 //            printf("after %d\n",__LINE__);
     return 0;
 }

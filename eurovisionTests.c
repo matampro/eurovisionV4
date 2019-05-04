@@ -352,7 +352,7 @@ bool testRunAudienceFavorite() {
   setupEurovisionJudges(eurovision);
   setupEurovisionVotes2(eurovision);
 
-  List ranking = eurovisionRunAudienceFavorite(eurovision);
+  List ranking = eurovisionRunAudienceFavorite1(eurovision);
   CHECK(listGetSize(ranking), 16);
   char *current = (char*)listGetFirst(ranking);
   CHECK(strcmp(current, "russia"), 0);
@@ -377,7 +377,7 @@ bool testRunGetFriendlyStates() {
   /* setupEurovisionJudges(eurovision); */
   setupEurovisionVotes2(eurovision);
 
-  List friendlies = eurovisionRunGetFriendlyStates(eurovision);
+  List friendlies = eurovisionRunGetFriendlyStates1(eurovision);
   CHECK((friendlies == NULL), false);
   CHECK(listGetSize(friendlies), 2);
   char *current = (char *)listGetFirst(friendlies);

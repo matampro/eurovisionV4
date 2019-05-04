@@ -99,7 +99,9 @@ List eurovisionRunContest1(Eurovision eurovision, int audiencePercent);
 
 List eurovisionRunAudienceFavorite(Eurovision eurovision);
 
-List eurovisionRunGetFriendlyStates(Eurovision eurovision);
+List eurovisionRunAudienceFavorite1(Eurovision eurovision);
 
+List eurovisionRunGetFriendlyStates(Eurovision eurovision);
+List eurovisionRunGetFriendlyStates1(Eurovision eurovision);
 
 #endif /* EUROVISION_H_ */

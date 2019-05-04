@@ -11,7 +11,7 @@
 #define MAX_NUMBER_OF_WINNERS 10
 #define TOTAL_PRECENT 100
 #define MAX_VOTE_SIZE 10
-
+#define MAX_VOTE_POSIBLE 12
 
 typedef struct resutlstring_t{
     float  score ;
@@ -928,17 +928,7 @@ List eurovisionRunContest1(Eurovision eurovision, int audiencePrecent) {
 //     }
 
     List list = listCreate(copyString, freeString);
-//    printf("list size %d %s \n",listGetSize(list),sortTempArray[0].name);
-//    ListElement s = (ListElement) sortTempArray[0].name;
-//    printf("funcp %p %p \n",copyString,s );
-//listInsertFirst(list,s);
-//printf("funcp %p %p \n",copyString,s );
-//    printf("list sssadds ize %d \n",listGetSize(list));
-//    //listInsertFirst(list,s);
-//     printf("list size %d \n",listGetSize(list));
-//     if (list == NULL) {
-//         return NULL;
-//    }
+
      for(int i=0;i<numberOfStates ;i++)
      {
 printf("name %d  %s %f\n",i,sortTempArray[i].name,sortTempArray[i].score);
@@ -946,31 +936,6 @@ printf("name %d  %s %f\n",i,sortTempArray[i].name,sortTempArray[i].score);
         listInsertLast(list,s);
      }
 
-//         printf("%d \n",listGetSize(list));
-
-         //listInsertFirst(list,sortTempArray[i].name);
-//          ListElement elem1 = listGetCurrent(list);
-//          printf("%p \n",elem1);
-//         printf("%d \n",listGetSize(list));
-//         ListElement elem =  listGetFirst(list);
-
-//         printf("%s %f \n",sortTempArray[i].name ,sortTempArray[i].score);
-//         ListResult result = listInsertLast(list,sortTempArray[i].name );
-//         if (result != LIST_SUCCESS) {
-//              printf("Error list\n" );
-//             return NULL;
-//         }
-//        }
-
-//     ListResult result = listInsertFirst(list, );
-//     if (result == LIST_OUT_OF_MEMORY) {
-//         return NULL;
-//     }
-//      listGetSize(list)
-//              ListResult result = listInsertAfterCurrent(list, iterator);
-//              if (result == LIST_OUT_OF_MEMORY) {
-//                  return NULL;
-//              }
 
 
                                                       //this is not the first element. we need to find its place in list
@@ -980,6 +945,282 @@ printf("exit contest  \n");
 
     return list;
 }
+
+
+
+
+List eurovisionRunAudienceFavorite1(Eurovision eurovision) {
+    if ((eurovision == NULL) ) {
+        return NULL;
+    }
+    /// create vote table of all state
+    int numberOfStates = mapGetSize( eurovision->state);
+    int* votesTables = (int *)malloc(sizeof(int)*numberOfStates * numberOfStates);
+    /// @todo add  check
+
+    memset(votesTables,sizeof(int)*numberOfStates * numberOfStates,0);
+
+
+    /// later return to map for each
+    for(int * iterator = mapGetFirst(eurovision->state);iterator;iterator =mapGetNext(eurovision->state)){
+        StateData state = (StateData) mapGet(eurovision->state,iterator);
+
+        for(int * iterVotes = mapGetFirst(state->citizenVote);iterVotes;iterVotes = mapGetNext(state->citizenVote))
+        {
+            int votesCast=*(int*)mapGet(state->citizenVote,iterVotes);
+            printf(" state %d gives %d votes: %d \n",*iterator,*iterVotes,votesCast);
+
+            votesTables[*iterator * numberOfStates + *iterVotes] = votesCast;
+        }
+    }
+    /// convert row to points
+    ///
+    ///
+    ///
+    for(int i=0;i<numberOfStates ;i++)
+    {
+        for(int j=0;j<numberOfStates ;j++)
+        {
+            printf(" %d ",votesTables[i*numberOfStates+ j]);
+        }
+        printf("\n");
+    }
+    printf(" ------------------------------Convert -------------------- \n");
+    for(int i=0;i<numberOfStates ;i++)
+    {
+        convertRowToPoints(&votesTables[i*numberOfStates],numberOfStates);
+    }
+
+    /// float array of country and total votes
+    float* stateTotalVote = (float *)malloc(sizeof(float)*numberOfStates );
+    /// @todo add  check
+
+
+    sumStateVotes(numberOfStates,numberOfStates , votesTables ,stateTotalVote );
+
+    Resulttmp* sortTempArray  = (Resulttmp *) malloc(sizeof(Resulttmp)*numberOfStates );
+    float maxelem;
+    int index;
+
+
+    for(int i=0;i<numberOfStates ;i++)
+    {
+        findMax(stateTotalVote,numberOfStates,&index,&maxelem);
+
+        ///so ugly :)
+        if(i==0)
+        {
+
+        sortTempArray[i].index=index;
+
+        sortTempArray[i].score=maxelem;
+
+        StateData state = (StateData) mapGet(eurovision->state,&index);
+        sortTempArray[i].name=stringCopy(state->stateName);
+        }
+        else
+        {
+            printf("addition %f \n",maxelem);
+
+            if(sortTempArray[i-1].score == maxelem)// same scroe
+            {
+                if(sortTempArray[i-1],index>index)
+                {
+                    // swap
+                    Resulttmp tmp;
+                    tmp.index = sortTempArray[i-1].index;
+                    tmp.name = sortTempArray[i-1].name;
+                    tmp.score = sortTempArray[i-1].score;
+
+                    sortTempArray[i-1].index=index;
+                    sortTempArray[i-1].score=maxelem;
+
+                    StateData state = (StateData) mapGet(eurovision->state,&index);
+                    sortTempArray[i-1].name=stringCopy(state->stateName);
+
+                    sortTempArray[i-1].index=tmp.index;
+                    sortTempArray[i-1].score=tmp.score ;
+                    sortTempArray[i-1].name=tmp.name;
+
+
+                }
+                else
+                {
+                    sortTempArray[i].index=index;
+                    sortTempArray[i].score=maxelem;
+
+                    StateData state = (StateData) mapGet(eurovision->state,&index);
+                    sortTempArray[i].name=stringCopy(state->stateName);
+                    //regularcase
+                }
+
+            }
+            else
+            {
+
+                sortTempArray[i].index=index;
+
+                sortTempArray[i].score=maxelem;
+
+                StateData state = (StateData) mapGet(eurovision->state,&index);
+                sortTempArray[i].name=stringCopy(state->stateName);
+            }
+
+
+        }
+        stateTotalVote[index]=-1;
+    }
+
+
+    List list = listCreate(copyString, freeString);
+
+     for(int i=0;i<numberOfStates ;i++)
+     {
+printf("name %d  %s %f\n",i,sortTempArray[i].name,sortTempArray[i].score);
+          ListElement s = (ListElement) sortTempArray[i].name;
+        listInsertLast(list,s);
+     }
+
+
+   return list;
+
+}
+
+
+List eurovisionRunGetFriendlyStates1(Eurovision eurovision) {
+
+
+
+    if ((eurovision == NULL) ) {
+        return NULL;
+    }
+    /// create vote table of all state
+    int numberOfStates = mapGetSize( eurovision->state);
+    int* votesTables = (int *)malloc(sizeof(int)*numberOfStates * numberOfStates);
+    /// @todo add  check
+
+    memset(votesTables,sizeof(int)*numberOfStates * numberOfStates,0);
+
+
+    /// later return to map for each
+    for(int * iterator = mapGetFirst(eurovision->state);iterator;iterator =mapGetNext(eurovision->state)){
+        StateData state = (StateData) mapGet(eurovision->state,iterator);
+
+        for(int * iterVotes = mapGetFirst(state->citizenVote);iterVotes;iterVotes = mapGetNext(state->citizenVote))
+        {
+            int votesCast=*(int*)mapGet(state->citizenVote,iterVotes);
+            printf(" state %d gives %d votes: %d \n",*iterator,*iterVotes,votesCast);
+
+            votesTables[*iterator * numberOfStates + *iterVotes] = votesCast;
+        }
+    }
+    /// convert row to points
+    ///
+    ///
+    ///
+//    for(int i=0;i<numberOfStates ;i++)
+//    {
+//        for(int j=0;j<numberOfStates ;j++)
+//        {
+//            printf(" %d ",votesTables[i*numberOfStates+ j]);
+//        }
+//        printf("\n");
+//    }
+//    printf(" ------------------------------Convert -------------------- \n");
+    for(int i=0;i<numberOfStates ;i++)
+    {
+        convertRowToPoints(&votesTables[i*numberOfStates],numberOfStates);
+    }
+
+//    /// float array of country and total votes
+    int* friendMat = (int *)malloc(sizeof(int)*numberOfStates*numberOfStates );
+//    /// @todo add  check
+    for(int i=0;i<numberOfStates ;i++)
+    {
+        for(int j=0;j<numberOfStates ;j++)
+        {
+            friendMat[i*numberOfStates+j]=0;
+        }
+    }
+
+//    sumStateVotes(numberOfStates,numberOfStates , votesTables ,stateTotalVote );
+
+//    Resulttmp* sortTempArray  = (Resulttmp *) malloc(sizeof(Resulttmp)*numberOfStates );
+//    float maxelem;
+//    int index;
+
+    for(int i=0;i<numberOfStates ;i++)
+    {
+        for(int j=0;j<numberOfStates ;j++)
+        {
+            if((votesTables[i*numberOfStates+ j] == votesTables[i*numberOfStates+ j])
+                    && votesTables[j*numberOfStates+ i] == MAX_VOTE_POSIBLE)
+            {
+                if(j>i)
+                {
+                    friendMat[i*numberOfStates+j]=1;
+                }
+
+            }
+
+        }
+    }
+
+
+    List list = listCreate(copyString, freeString);
+
+
+    for(int i=0;i<numberOfStates ;i++)
+    {
+        for(int j=0;j<numberOfStates ;j++)
+        {
+            if(friendMat[i*numberOfStates+j] == 1 )
+            {
+                StateData state1 = (StateData)mapGet(eurovision->state,&i);
+                StateData state2 = (StateData)mapGet(eurovision->state,&j);
+                char* finalStr = (char *) malloc(sizeof(char)*strlen(state1->stateName)*strlen(state2->stateName)+ 3 +1 );
+                if(strcmp(state1->stateName,state2->stateName)<0)
+                {
+
+                   strcpy(finalStr,state1->stateName);
+                   char * currpoint = finalStr+strlen(state1->stateName);
+                   *currpoint = ' ';
+                   currpoint++;
+                   *currpoint = '-';
+                   currpoint++;
+                   *currpoint = ' ';
+                   currpoint++;
+                   strcpy(currpoint,state2->stateName);
+                }
+                else
+                {
+                    strcpy(finalStr,state2->stateName);
+                    char * currpoint = finalStr+strlen(state2->stateName);
+                    *currpoint = ' ';
+                    currpoint++;
+                    *currpoint = '-';
+                    currpoint++;
+                    *currpoint = ' ';
+                    currpoint++;
+                    strcpy(currpoint,state1->stateName);
+                }
+            printf("name   %s \n",finalStr);
+            ListElement s = (ListElement) finalStr;
+            listInsertLast(list,s);
+            free(finalStr);
+            }
+
+            listSort(list,strcmp);
+        }
+    }
+
+
+   return list;
+
+
+}
+
+
 
 List eurovisionRunContest(Eurovision eurovision, int audiencePrecent) {
     if ((eurovision == NULL) || (audiencePrecent < 1) || (audiencePrecent > 100)) {
