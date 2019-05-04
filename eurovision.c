@@ -55,7 +55,7 @@ char* stringCopy(const char* str) {
         return NULL;
     }
     size_t strLength =strlen(str);
-    char *strDest = malloc(sizeof(strLength + 1));
+    char *strDest =(char *) malloc(sizeof(char)*strLength + 1);
     if (strDest == NULL) {
         return NULL;
     } else {
@@ -675,7 +675,7 @@ void sumStateVotes(size_t row, size_t col ,int *votesTables ,float* stateTotalVo
     //    float* stateTotalVote = (float *)malloc(sizeof(float)*col );
     /// @todo add  check
 
-    memset(stateTotalVote,sizeof(float)*col ,0);
+    memset(stateTotalVote,0 ,sizeof(float)*col);
 
 //    for(int i=0;i<row ;i++)
 //    {
@@ -729,7 +729,7 @@ List eurovisionRunContest1(Eurovision eurovision, int audiencePrecent) {
     int* votesTables = (int *)malloc(sizeof(int)*numberOfStates * numberOfStates);
     /// @todo add  check
 
-    memset(votesTables,sizeof(int)*numberOfStates * numberOfStates,0);
+    memset(votesTables,0,sizeof(int)*numberOfStates * numberOfStates);
 
 
     /// later return to map for each
@@ -777,7 +777,7 @@ List eurovisionRunContest1(Eurovision eurovision, int audiencePrecent) {
     int* judgeTables = (int *)malloc(sizeTableJudge);
     /// @todo add  check
 
-    memset(judgeTables,sizeTableJudge,0);
+    memset(judgeTables,0 ,sizeTableJudge);
 
 
     /// later return to map for each
@@ -812,7 +812,7 @@ List eurovisionRunContest1(Eurovision eurovision, int audiencePrecent) {
 
     ///  stateTotalVote
     float* finalTally  = (float *)malloc(sizeof(float)*numberOfStates );
-    memset(finalTally,sizeof(float)*numberOfStates ,0);
+    memset(finalTally,0 ,sizeof(float)*numberOfStates );
 
     float audPre =  audiencePrecent;
     float compAudpre = 100 - audPre;
@@ -945,7 +945,7 @@ List eurovisionRunAudienceFavorite1(Eurovision eurovision) {
     int* votesTables = (int *)malloc(sizeof(int)*numberOfStates * numberOfStates);
     /// @todo add  check
 
-    memset(votesTables,sizeof(int)*numberOfStates * numberOfStates,0);
+    memset(votesTables,0,sizeof(int)*numberOfStates * numberOfStates);
 
 
     /// later return to map for each
@@ -1086,7 +1086,7 @@ List eurovisionRunGetFriendlyStates1(Eurovision eurovision) {
     int* votesTables = (int *)malloc(sizeof(int)*numberOfStates * numberOfStates);
     /// @todo add  check
 
-    memset(votesTables,sizeof(int)*numberOfStates * numberOfStates,0);
+    memset(votesTables,0, sizeof(int)*numberOfStates * numberOfStates);
 
 
     /// later return to map for each
