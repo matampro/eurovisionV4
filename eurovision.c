@@ -70,9 +70,9 @@ ListElement copyStringData(ListElement strvoid)
     if(strvoid  == NULL){
         return NULL;
     }
-    char * str = (char *)strvoid;
+    char * str = (char *) strvoid;
     size_t strLength = strlen (str);
-    char *strDest = malloc(sizeof(strLength + 1));
+    char *strDest = malloc(sizeof(char)*strLength + 1);
     if (strDest == NULL) {
         return NULL;
     } else {
@@ -713,8 +713,9 @@ ListElement copyString(ListElement str){
    return copyStringData(str);
 }
 
-void freeString(ListElement str)
+void freeString(ListElement strvoid)
 {
+    char* str= strvoid;
     free(str);
 }
 
