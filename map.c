@@ -117,7 +117,7 @@ Map mapCopy(Map map){
 //    }
 
             /// must copy fuctions as well
-       new_map->compair_key = map->compair_key;
+        new_map->compair_key = map->compair_key;
         new_map->data_copy= map->data_copy;
         new_map->counter=map->counter;
         new_map->free_data=map->free_data;
