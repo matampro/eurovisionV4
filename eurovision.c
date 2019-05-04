@@ -97,26 +97,29 @@ static StateDataMap copyStateData(StateDataMap dataToCopy) {
 
         stateDataNew->stateName = stringCopy(data->stateName);
         if (stateDataNew->stateName == NULL) {
+            free(stateDataNew);
             return NULL;
         }
 
         stateDataNew->songName = stringCopy(data->songName);
         if (stateDataNew->songName == NULL) {
-            free(data->stateName);
+            free(stateDataNew->stateName);
+            free(stateDataNew);
             return NULL;
         }
 
         Map citizenVoteDest = mapCopy(data->citizenVote);
         if (citizenVoteDest == NULL) {
-            free(data->stateName);
-            free(data->songName);
+            free(stateDataNew->stateName);
+            free(stateDataNew->songName);
+            free(stateDataNew);
             return NULL;
         }
-
         stateDataNew->citizenVote = citizenVoteDest;
+        return stateDataNew;
     }
 
-    return stateDataNew;
+
 }
 
 /** Function to be used by the map for freeing elements */
@@ -132,6 +135,7 @@ static void freeStateData(StateDataMap dataToFree) {
         free(toFree->songName);
 
         mapDestroy(toFree->citizenVote);
+        free(toFree);
     }
 
 }
@@ -218,12 +222,11 @@ static JudgeDataMap copyJudgeDataElement(JudgeDataMap judgeDataToCopy) {
         judgeDataNew->judgeResults = malloc((sizeof(int)) * NUMBER_OF_RESULTS);
         if (judgeDataNew->judgeResults == NULL) {
             freeJudgeDataElement(judgeDataNew);
-            free(judgeDataNew->judgeName);
+         //   free(judgeDataNew->judgeName);
             return NULL;
         }
 
         for (int i = 0; i < NUMBER_OF_RESULTS; i++) {
-
 
             judgeDataNew->judgeResults[i] = data->judgeResults[i];
         }
@@ -236,10 +239,12 @@ static void freeJudgeDataElement(JudgeDataMap judgeDataToFree) {
     JudgeData ptr = (JudgeData) judgeDataToFree;
     free(ptr->judgeName);
     free(ptr->judgeResults);
+    free(ptr);
 }
 
 Eurovision eurovisionCreate() {
     Eurovision eurovision = malloc(sizeof(*eurovision));
+
     if (eurovision == NULL) {
         return NULL;
     }
@@ -263,6 +268,7 @@ void eurovisionDestroy(Eurovision eurovision) {
     mapDestroy(eurovision->state);
 
     mapDestroy(eurovision->judge);
+    free(eurovision);
 }
 
 
@@ -317,7 +323,7 @@ EurovisionResult eurovisionAddState(Eurovision eurovision, int stateId, const ch
         newStateData->stateName = stringCopy(stateName);
         if (newStateData->stateName == NULL) {
             freeStateData(newStateData);
-            free(newStateData);
+            //free(newStateData);
             eurovisionDestroy(eurovision);
             return EUROVISION_OUT_OF_MEMORY;
         }
@@ -325,7 +331,7 @@ EurovisionResult eurovisionAddState(Eurovision eurovision, int stateId, const ch
         newStateData->songName = stringCopy(songName);
         if (newStateData->songName == NULL) {
             freeStateData(newStateData);
-            free(newStateData);
+            //free(newStateData);
             eurovisionDestroy(eurovision);
             return EUROVISION_OUT_OF_MEMORY;
         }
@@ -335,23 +341,24 @@ EurovisionResult eurovisionAddState(Eurovision eurovision, int stateId, const ch
 
         if (citizenVote == NULL) {
             freeStateData(newStateData);
-            free(newStateData);
+//            free(newStateData);
             eurovisionDestroy(eurovision);
             return EUROVISION_OUT_OF_MEMORY;
         } else {
-            newStateData->citizenVote = mapCopy(citizenVote);
+            newStateData->citizenVote = (citizenVote);
 
 
             MapResult mapResult = mapPut(eurovision->state, &stateId,
                                          newStateData);  //we have to add a new map to the *state
             if (mapResult == MAP_OUT_OF_MEMORY) {
                 freeStateData(newStateData);
-                free(newStateData);
+//                free(newStateData);
                 eurovisionDestroy(eurovision);
                 return EUROVISION_OUT_OF_MEMORY;
             }
 
-
+            freeStateData(newStateData);
+//            free(newStateData);
             return EUROVISION_SUCCESS;
 
         }
@@ -434,12 +441,14 @@ EurovisionResult eurovisionAddJudge(Eurovision eurovision, int judgeId, const ch
 
                 newJudgeData->judgeResults[i] = judgeResults[i];
             } else {
-
+                freeJudgeDataElement(newJudgeData);
+                //free(newJudgeData);
 
                 return EUROVISION_STATE_NOT_EXIST;
             }
         } else {
-
+            freeJudgeDataElement(newJudgeData);
+            //free(newJudgeData);
 
             return EUROVISION_INVALID_ID;
 
@@ -452,10 +461,14 @@ EurovisionResult eurovisionAddJudge(Eurovision eurovision, int judgeId, const ch
 
     if (result == MAP_OUT_OF_MEMORY) {
         freeJudgeDataElement(newJudgeData);
-        free(newJudgeData);
+        //free(newJudgeData);
         eurovisionDestroy(eurovision);
         return EUROVISION_OUT_OF_MEMORY;
     } else {
+        freeJudgeDataElement(newJudgeData);
+       // free(newJudgeData);
+
+
         return EUROVISION_SUCCESS;
     }
 
@@ -823,12 +836,20 @@ List eurovisionRunContest(Eurovision eurovision, int audiencePercent) {
         ListElement s = (ListElement) sortTempArray[i].name;
         listInsertLast(list, s);
     }
+     for (int i = 0; i < numberOfStates; i++) {
+      free(sortTempArray[i].name);
+     }
+
     free(votesTables);
+    free(judgeTables);
     free(sortTempArray);
     free(stateTotalVotejudge);
+
     free( finalTally);
     free( stateTotalVote);
     return list;
+
+
 }
 
 
@@ -936,7 +957,10 @@ List eurovisionRunAudienceFavorite(Eurovision eurovision) {
         ListElement s = (ListElement) sortTempArray[i].name;
         listInsertLast(list, s);
     }
-
+    for (int i = 0; i < numberOfStates; i++) {
+     free(sortTempArray[i].name);
+    }
+    free(stateTotalVote);
     free(votesTables);
     free(sortTempArray);
     return list;

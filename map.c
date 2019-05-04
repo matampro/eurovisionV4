@@ -66,28 +66,26 @@ void mapDestroy(Map map) {
      
     if (map != NULL) { //protections
          
-        if (map->head != NULL) {
-            MapKeyElement test;
-            test = map->head->mapKeyElement;
+        Node iter = map->head;
+        if (iter != NULL) {
 
-            while (map->head->next != NULL) {
-                Node tmp = map->head->next;
-                test = map->head->mapKeyElement;
+            while (iter->next != NULL) {
+                Node tmp = iter->next;
 
 
-                map->free_key(map->head->mapKeyElement);
+                map->free_key(iter->mapKeyElement);
 
-                map->free_data(map->head->mapDataElement);
-                free(map->head);
-                map->head = tmp;
+                map->free_data(iter->mapDataElement);
+                free(iter);
+                iter = tmp;
             }
              
 
-            if (map->head->mapDataElement != NULL)
-                map->free_data(map->head->mapDataElement);          ///free last node
-            if (map->head->mapKeyElement != NULL)
-                map->free_key(map->head->mapKeyElement);
-            free(map->head);
+//            if (iter->mapDataElement != NULL)
+                map->free_data(iter->mapDataElement);          ///free last node
+//            if (iter->mapKeyElement != NULL)
+                map->free_key(iter->mapKeyElement);
+            free(iter);
         }
          
         free(map);
@@ -205,6 +203,7 @@ MapResult createNewNode(Node *new_node, MapKeyElement keyElement, MapDataElement
     }
     *new_node = malloc(sizeof(struct node_t));
     if (*new_node == NULL) {
+        free( *new_node);
         return MAP_OUT_OF_MEMORY;
     } else {
 
@@ -248,7 +247,9 @@ MapResult mapPut(Map map, MapKeyElement keyElement, MapDataElement dataElement) 
     for (iter = map->head; iter != NULL; iter = iter->next) {
 
         if (map->compair_key(iter->mapKeyElement, keyElement) == 0) {//swap data
+            free(  iter->mapDataElement);
             iter->mapDataElement = map->data_copy(dataElement);
+            free( iter->mapKeyElement);
             iter->mapKeyElement = map->key_copy(keyElement);
             return MAP_SUCCESS;
         }
