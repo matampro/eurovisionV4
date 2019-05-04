@@ -12,22 +12,22 @@
   } while (0);
 
 int main(int argc, char *argv[]) {
-   //TEST(testAddState)
+  TEST(testAddState)
     //printf("after %d\n",__LINE__);
-    //TEST(testRemoveState)
+   TEST(testRemoveState)
       //      printf("after %d\n",__LINE__);
-    //TEST(testAddJudge)
+    TEST(testAddJudge)
         //    printf("after %d\n",__LINE__);
-   // TEST(testRemoveJudge)
+    TEST(testRemoveJudge)
 //            printf("after %d\n",__LINE__);
-    //TEST(testAddVote)
+    TEST(testAddVote)
 //            printf("after %d\n",__LINE__);
-  //TEST(testRemoveVote)
+  TEST(testRemoveVote)
 //            printf("after %d\n",__LINE__);
-  // TEST(testRunContest)
+   TEST(testRunContest)
 //            printf("after %d\n",__LINE__);
 
-    //TEST(testRunAudienceFavorite)
+   TEST(testRunAudienceFavorite)
 //            printf("after %d\n",__LINE__);
   TEST(testRunGetFriendlyStates)
 //            printf("after %d\n",__LINE__);

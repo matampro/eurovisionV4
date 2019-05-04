@@ -46,7 +46,6 @@ Map mapCreate(copyMapDataElements copyDataElement,copyMapKeyElements copyKeyElem
 }
 void mapPrint(Map map) {
 
-   printf("PRINTING ...%d \n\n",map->counter);
     if(map->head != NULL) {
          Node curr = map->head;
            MapKeyElement test;
@@ -55,11 +54,9 @@ void mapPrint(Map map) {
           test= curr->mapKeyElement;
 
             StateData newStateData = (StateData)curr->mapDataElement;
-            printf(" addr head %p elem %d  data  %p \n",curr ,*(int*)test,newStateData->citizenVote );
             curr = tmp;
         }
          test= curr->mapKeyElement;
-        printf(" addr head %p elem %d  data  %s \n",curr ,*(int*)test,curr->mapDataElement );
     }
 
 }
@@ -68,7 +65,6 @@ void mapDestroy(Map map) {
    if(map!=NULL){ //protections
         LOG
     if(map->head != NULL) {
-        printf("Destroying  ...%d \n\n",map->counter);
         MapKeyElement test;
         test=  map->head->mapKeyElement;
 
@@ -219,7 +215,6 @@ MapResult createNewNode(Node *new_node,MapKeyElement keyElement, MapDataElement 
         return MAP_OUT_OF_MEMORY;
     }else{
          LOG4
-//         printf("function copy data %p  %d\n",map->data_copy,*(int*)dataElement);
         (*new_node)->mapDataElement = map->data_copy (dataElement);
           LOG4
         (*new_node)->mapKeyElement = map->key_copy(keyElement);
@@ -234,9 +229,7 @@ void addNewNodeAfterNode(Node new_node ,Node previousNode) {
     new_node->next =  temp;
 }
 MapResult mapPut(Map map, MapKeyElement keyElement, MapDataElement dataElement) {
-//printf("has function %p\n", map->data_copy);
     Node iter;
-    printf("put %d in %d\n", *(int *)dataElement,*(int *)keyElement);
 
     if((map == NULL) || (keyElement == NULL)|| (dataElement == NULL)){
         return MAP_OUT_OF_MEMORY;
@@ -258,12 +251,10 @@ MapResult mapPut(Map map, MapKeyElement keyElement, MapDataElement dataElement) 
             return MAP_SUCCESS;
         }
     }
- printf("traverse \n");
     Node prevNode=map->head;
     for (iter = map->head; iter != NULL ; iter = iter->next) {
         LOG4
         if (map->compair_key(iter->mapKeyElement, keyElement) == 0) {//swap data
-            printf("swap \n");
             iter->mapDataElement = map->data_copy(dataElement);
             iter->mapKeyElement = map->key_copy(keyElement);
             return MAP_SUCCESS;
@@ -280,7 +271,6 @@ MapResult mapPut(Map map, MapKeyElement keyElement, MapDataElement dataElement) 
         }
         prevNode = iter;
       }
-     printf("last node  \n");
         iter=prevNode;
         LOG4
         if (map->compair_key( keyElement,iter->mapKeyElement) > 0){
