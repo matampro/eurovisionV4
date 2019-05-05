@@ -107,9 +107,6 @@ Map mapCreate(copyMapDataElements copyDataElement,
 */
 void mapDestroy(Map map);
 
-
-void mapPrint(Map map);
-
 /**
 * mapCopy: Creates a copy of target map.
 * Iterator values for both maps is undefined after this operation.
