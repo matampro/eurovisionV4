@@ -14,20 +14,17 @@ StateDataMap copyStateData(StateDataMap dataToCopy) {
     if (stateDataNew == NULL) {
         return NULL;
     } else {
-
         stateDataNew->stateName = stringCopy(data->stateName);
         if (stateDataNew->stateName == NULL) {
             free(stateDataNew);
             return NULL;
         }
-
         stateDataNew->songName = stringCopy(data->songName);
         if (stateDataNew->songName == NULL) {
             free(stateDataNew->stateName);
             free(stateDataNew);
             return NULL;
         }
-
         Map citizenVoteDest = mapCopy(data->citizenVote);
         if (citizenVoteDest == NULL) {
             free(stateDataNew->stateName);
@@ -44,17 +41,11 @@ StateDataMap copyStateData(StateDataMap dataToCopy) {
 
 void freeStateData(StateDataMap dataToFree) {
 
-
     StateData toFree = (StateData) dataToFree;
-
-
     if (toFree != NULL) {
         free(toFree->stateName);
-
         free(toFree->songName);
-
         mapDestroy(toFree->citizenVote);
         free(toFree);
     }
-
 }
