@@ -38,21 +38,6 @@ typedef struct {
 } *Map_cheat;
 
 
-List makeSortedListByMapData(Map map);
-
-void printResult(List list);
-
-char *createStr(char *str1, char *str2);
-
-ListElement copyFriendly(ListElement);
-
-void freeFriendly(ListElement);
-
-int compareFriendly(ListElement, ListElement);
-
-
-int place[MAX_NUMBER_OF_WINNERS] = {12, 10, 8, 7, 6, 5, 4, 3, 2, 1};
-
 char *stringCopy(const char *str) {
     if (str == NULL) {
         return NULL;
@@ -167,10 +152,6 @@ static KeyElement copyKeyElement(KeyElement keyToCopy) {
     }
     *ptr = *(int *) keyToCopy;
     return ptr;
-}
-
-void freeStringData(ListElement str) {
-    free(str);
 }
 
 void freeVoteDataElement(VoteDataElement voteToFree) {
@@ -494,7 +475,7 @@ EurovisionResult eurovisionRemoveJudge(Eurovision eurovision, int judgeId) {
         return EUROVISION_SUCCESS;
     } else {
 
-        return MAP_ITEM_DOES_NOT_EXIST;
+        return EUROVISION_JUDGE_NOT_EXIST;
     }
 
 }
@@ -580,7 +561,7 @@ EurovisionResult eurovisionRemoveVote(Eurovision eurovision, int stateGiver, int
     }
 }
 
-void findMax(int *row, size_t numberOfStates, int *index, int *val) {
+void findMax(const int *row, size_t numberOfStates, int *index, int *val) {
     int max = -1;
     *index = -1;
     *val = -1;
@@ -595,7 +576,7 @@ void findMax(int *row, size_t numberOfStates, int *index, int *val) {
 
 }
 
-void findMaxfloat(float *row, size_t numberOfStates, int *index, float *val) {
+void findMaxfloat(const float *row, size_t numberOfStates, int *index, float *val) {
     float max = -1;
     *index = -1;
     *val = -1;
@@ -643,7 +624,7 @@ void convertRowToPoints(int *row, size_t numberOfStates) {
     free(tempRow);
 }
 
-void sumStateVotes(size_t row, size_t col, int *votesTables, float *stateTotalVote) {
+void sumStateVotes(size_t row, size_t col,const int *votesTables, float *stateTotalVote) {
     int totalVoteCount = 0;
 
     for (int i = 0; i < row; i++) {
@@ -787,7 +768,7 @@ List eurovisionRunContest(Eurovision eurovision, int audiencePercent) {
 
             if (sortTempArray[i - 1].score == maxelem)// same scroe
             {
-                if (sortTempArray[i - 1], index > index) {
+                if (sortTempArray[i - 1].index > index) {
                     // swap
                     Resulttmp tmp;
                     tmp.index = sortTempArray[i - 1].index;
@@ -908,7 +889,7 @@ List eurovisionRunAudienceFavorite(Eurovision eurovision) {
 
             if (sortTempArray[i - 1].score == maxelem)// same scroe
             {
-                if (sortTempArray[i - 1], index > index) {
+                if (sortTempArray[i - 1].index > index) {
                     // swap
                     Resulttmp tmp;
                     tmp.index = sortTempArray[i - 1].index;

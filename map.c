@@ -44,7 +44,7 @@ Map mapCreate(copyMapDataElements copyDataElement, copyMapKeyElements copyKeyEle
 
     return map;
 }
-
+/*
 void mapPrint(Map map) {
 
     if (map->head != NULL) {
@@ -61,7 +61,7 @@ void mapPrint(Map map) {
     }
 
 }
-
+*/
 void mapDestroy(Map map) {
      
     if (map != NULL) { //protections
