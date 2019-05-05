@@ -1,5 +1,8 @@
 #include "eurovision.h"
 #include "list.h"
+#include "state.h"
+#include "map.h"
+#include "judge.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -8,10 +11,21 @@
 
 
 #define NUMBER_OF_RESULTS 10
-#define MAX_NUMBER_OF_WINNERS 10
-#define TOTAL_PRECENT 100
 #define MAX_VOTE_SIZE 10
 #define MAX_VOTE_POSIBLE 12
+
+
+struct eurovision_t{
+    Map state;
+    Map judge;
+};
+
+
+typedef void *KeyElement;
+
+typedef void *VoteElement;
+
+typedef void *VoteDataElement;
 
 typedef struct resutlstring_t {
     float score;
@@ -20,23 +34,7 @@ typedef struct resutlstring_t {
 } Resulttmp;
 
 
-typedef struct node_t {
-    MapDataElement mapDataElement;
-    MapKeyElement mapKeyElement;
-    struct node_t *next;
-} *Node;
-
-typedef struct {
-    int counter;
-    Node head;
-    Node tail;
-    copyMapDataElements data_copy;
-    copyMapKeyElements key_copy;
-    compareMapKeyElements compair_key;
-    freeMapDataElements free_data;
-    freeMapKeyElements free_key;
-} *Map_cheat;
-
+void freeJudgeDataElement(JudgeDataMap judgeDataToFree);
 
 char *stringCopy(const char *str) {
     if (str == NULL) {
@@ -68,62 +66,6 @@ ListElement copyStringData(ListElement strvoid) {
     return strDest;
 }
 
-
-static StateDataMap copyStateData(StateDataMap dataToCopy) {
-
-    if (dataToCopy == NULL) {
-        return NULL;
-    }
-    StateData data = (StateData) dataToCopy;
-    StateData stateDataNew = malloc(sizeof(*stateDataNew));
-    if (stateDataNew == NULL) {
-        return NULL;
-    } else {
-
-        stateDataNew->stateName = stringCopy(data->stateName);
-        if (stateDataNew->stateName == NULL) {
-            free(stateDataNew);
-            return NULL;
-        }
-
-        stateDataNew->songName = stringCopy(data->songName);
-        if (stateDataNew->songName == NULL) {
-            free(stateDataNew->stateName);
-            free(stateDataNew);
-            return NULL;
-        }
-
-        Map citizenVoteDest = mapCopy(data->citizenVote);
-        if (citizenVoteDest == NULL) {
-            free(stateDataNew->stateName);
-            free(stateDataNew->songName);
-            free(stateDataNew);
-            return NULL;
-        }
-        stateDataNew->citizenVote = citizenVoteDest;
-        return stateDataNew;
-    }
-
-
-}
-
-/** Function to be used by the map for freeing elements */
-static void freeStateData(StateDataMap dataToFree) {
-
-
-    StateData toFree = (StateData) dataToFree;
-
-
-    if (toFree != NULL) {
-        free(toFree->stateName);
-
-        free(toFree->songName);
-
-        mapDestroy(toFree->citizenVote);
-        free(toFree);
-    }
-
-}
 
 
 static VoteDataElement copyVoteDataElement(VoteDataElement voteToCopy) {
@@ -216,7 +158,7 @@ static JudgeDataMap copyJudgeDataElement(JudgeDataMap judgeDataToCopy) {
     }
 }
 
-static void freeJudgeDataElement(JudgeDataMap judgeDataToFree) {
+void freeJudgeDataElement(JudgeDataMap judgeDataToFree) {
     JudgeData ptr = (JudgeData) judgeDataToFree;
     free(ptr->judgeName);
     free(ptr->judgeResults);
@@ -282,25 +224,20 @@ bool checkIfNameIsLegal(const char *name) {
 }
 
 EurovisionResult eurovisionAddState(Eurovision eurovision, int stateId, const char *stateName, const char *songName) {
-
-
     if (eurovision == NULL) {
         return EUROVISION_NULL_ARGUMENT;
     } else if (!checkIfNotNegitive(stateId)) {
         return EUROVISION_INVALID_ID;
     } else if (mapContains(eurovision->state, &stateId)) {
-
         return EUROVISION_STATE_ALREADY_EXIST;
     } else if (!checkIfNameIsLegal(stateName) || !checkIfNameIsLegal(songName)) {
         return EUROVISION_INVALID_NAME;
     } else {
-
         StateData newStateData = (StateData) malloc(sizeof(*newStateData));
         if (newStateData == NULL) {
             eurovisionDestroy(eurovision);
             return EUROVISION_OUT_OF_MEMORY;
         }
-
         newStateData->stateName = stringCopy(stateName);
         if (newStateData->stateName == NULL) {
             freeStateData(newStateData);
@@ -308,7 +245,6 @@ EurovisionResult eurovisionAddState(Eurovision eurovision, int stateId, const ch
             eurovisionDestroy(eurovision);
             return EUROVISION_OUT_OF_MEMORY;
         }
-
         newStateData->songName = stringCopy(songName);
         if (newStateData->songName == NULL) {
             freeStateData(newStateData);
