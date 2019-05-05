@@ -4,7 +4,6 @@
 #include "citizenVote.h"
 
 VoteDataElement copyVoteDataElement(VoteDataElement voteToCopy) {
-
     if (voteToCopy == NULL) {
         return NULL;
     }
@@ -21,5 +20,3 @@ VoteDataElement copyVoteDataElement(VoteDataElement voteToCopy) {
 void freeVoteDataElement(VoteDataElement voteToFree) {
     free(voteToFree);
 }
-
-

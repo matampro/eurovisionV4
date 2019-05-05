@@ -912,7 +912,3 @@ List eurovisionRunGetFriendlyStates(Eurovision eurovision) {
     return list;
 
 }
-
-
-
-
