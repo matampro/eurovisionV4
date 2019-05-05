@@ -218,7 +218,6 @@ EurovisionResult eurovisionRemoveState(Eurovision eurovision, int stateId) {
             }
             Map citizenVote = stateData->citizenVote;
             if (citizenVote == NULL) {
-                printf("Error null votes for iter %d\n", *iter);
                 return EUROVISION_NULL_ARGUMENT;
             }
             MapResult result1 = mapRemove(citizenVote, &stateId);
@@ -226,8 +225,7 @@ EurovisionResult eurovisionRemoveState(Eurovision eurovision, int stateId) {
                 return EUROVISION_NULL_ARGUMENT;
             }
         }
-        if (MAP_SUCCESS == result)
-            return EUROVISION_SUCCESS;
+        return EUROVISION_SUCCESS;
     }
 }
 
@@ -304,7 +302,7 @@ EurovisionResult eurovisionRemoveJudge(Eurovision eurovision, int judgeId) {
 
 EurovisionResult eurovisionAddVote(Eurovision eurovision, int stateGiver,
                                                               int stateTaker) {
-    if ((!checkIfNotNegitive(stateGiver)) || (!checkIfNotNegitive(stateTaker))){
+    if ((!checkIfNotNegitive(stateGiver)) || (!checkIfNotNegitive(stateTaker))) {
         return EUROVISION_INVALID_ID;
     } else if (stateGiver == stateTaker) {
         return EUROVISION_SAME_STATE;
@@ -313,38 +311,40 @@ EurovisionResult eurovisionAddVote(Eurovision eurovision, int stateGiver,
         bool result2 = mapContains(eurovision->state, &stateTaker);
         if ((!result1) || (!result2)) {
             return EUROVISION_STATE_NOT_EXIST;
+        } else {
+            StateData stateData = (StateData) mapGet(eurovision->state, &stateGiver);
+            void *votes = (void *) mapGet(stateData->citizenVote, &stateTaker);
+            int numVotes;
+            if (votes == NULL) {
+                numVotes = 1;
+                MapResult result = mapPut(stateData->citizenVote, &stateTaker,
+                                          &numVotes);
+                if (result == MAP_OUT_OF_MEMORY) {
+                    eurovisionDestroy(eurovision);
+                    return EUROVISION_OUT_OF_MEMORY;
+                } else {              /*(result == MAP_SUCCESS)*/
+                    return EUROVISION_SUCCESS;
+                }
+            } else {
+                numVotes = *(int *) votes;
+                numVotes++;
+                MapResult result = mapPut(stateData->citizenVote, &stateTaker,
+                                          &numVotes);
+                if (result == MAP_OUT_OF_MEMORY) {
+                    eurovisionDestroy(eurovision);
+                    return EUROVISION_OUT_OF_MEMORY;
+                }
+                return EUROVISION_SUCCESS;
+            }
         }
-    }
-    StateData stateData = (StateData) mapGet(eurovision->state, &stateGiver);
-    void *votes = (void *) mapGet(stateData->citizenVote, &stateTaker);
-    int numVotes;
-    if (votes == NULL) {
-        numVotes = 1;
-        MapResult result = mapPut(stateData->citizenVote, &stateTaker,
-                                                                    &numVotes);
-        if (result == MAP_OUT_OF_MEMORY) {
-            eurovisionDestroy(eurovision);
-            return EUROVISION_OUT_OF_MEMORY;
-        }
-        if (result == MAP_SUCCESS) {
-            return EUROVISION_SUCCESS;
-        }
-    } else {
-        numVotes = *(int *) votes;
-        numVotes++;
-        MapResult result = mapPut(stateData->citizenVote, &stateTaker,
-                                                                    &numVotes);
-        if (result == MAP_OUT_OF_MEMORY) {
-            eurovisionDestroy(eurovision);
-            return EUROVISION_OUT_OF_MEMORY;
-        }
-        return EUROVISION_SUCCESS;
     }
 }
 
+
+
 EurovisionResult eurovisionRemoveVote(Eurovision eurovision, int stateGiver,
                                                                int stateTaker) {
-    if ((!checkIfNotNegitive(stateGiver)) || (!checkIfNotNegitive(stateTaker))){
+    if ((!checkIfNotNegitive(stateGiver)) || (!checkIfNotNegitive(stateTaker))) {
         return EUROVISION_INVALID_ID;
     } else if (stateGiver == stateTaker) {
         return EUROVISION_SAME_STATE;
@@ -353,24 +353,26 @@ EurovisionResult eurovisionRemoveVote(Eurovision eurovision, int stateGiver,
         bool result2 = mapContains(eurovision->state, &stateTaker);
         if ((!result1) || (!result2)) {
             return EUROVISION_STATE_NOT_EXIST;
+        } else {
+            StateData stateData = (StateData) mapGet(eurovision->state, &stateGiver);
+            void *votes = (void *) mapGet(stateData->citizenVote, &stateTaker);
+            int numVotes;
+            if (votes == NULL) {
+                return EUROVISION_SUCCESS;
+            } else {
+                numVotes = *(int *) votes;
+                MapResult result = mapPut(stateData->citizenVote, &stateTaker,
+                                          &numVotes - 1);
+                if (result == MAP_OUT_OF_MEMORY) {
+                    eurovisionDestroy(eurovision);
+                    return EUROVISION_OUT_OF_MEMORY;
+                }
+                return EUROVISION_SUCCESS;
+            }
         }
-    }
-    StateData stateData = (StateData) mapGet(eurovision->state, &stateGiver);
-    void *votes = (void *) mapGet(stateData->citizenVote, &stateTaker);
-    int numVotes;
-    if (votes == NULL) {
-        return EUROVISION_SUCCESS;
-    } else {
-        numVotes = *(int *) votes;
-        MapResult result = mapPut(stateData->citizenVote, &stateTaker,
-                                  &numVotes - 1);
-        if (result == MAP_OUT_OF_MEMORY) {
-            eurovisionDestroy(eurovision);
-            return EUROVISION_OUT_OF_MEMORY;
-        }
-        return EUROVISION_SUCCESS;
     }
 }
+
 
 void findMax(const int *row, size_t numberOfStates, int *index, int *val) {
     int max = -1;
