@@ -586,11 +586,6 @@ List eurovisionRunContest(Eurovision eurovision, int audiencePercent) {
         finalTally[i] =
             (stateTotalVote[i] * audPre + stateTotalVotejudge[i] * compAudpre);
     }
-    float sum = 0;
-    for (int i = 0; i < numberOfStates; i++) {
-        StateData st = (StateData) mapGet(eurovision->state, &i);   ///need  to check st?????????????????????
-        sum += finalTally[i];
-    }
     Resulttmp *sortTempArray =
                       (Resulttmp *) malloc(sizeof(Resulttmp) * numberOfStates);
     if (sortTempArray == NULL) {
