@@ -58,6 +58,3 @@ void freeStateData(StateDataMap dataToFree) {
     }
 
 }
-
-
-

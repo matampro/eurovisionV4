@@ -3,29 +3,25 @@
 #include "state.h"
 #include "map.h"
 #include "judge.h"
+#include "citizenVote.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <assert.h>
 #include <string.h>
 
-
 #define NUMBER_OF_RESULTS 10
 #define MAX_VOTE_SIZE 10
 #define MAX_VOTE_POSIBLE 12
-
 
 struct eurovision_t{
     Map state;
     Map judge;
 };
 
-
 typedef void *KeyElement;
 
 typedef void *VoteElement;
-
-typedef void *VoteDataElement;
 
 typedef struct resutlstring_t {
     float score;
@@ -33,8 +29,6 @@ typedef struct resutlstring_t {
     char *name;
 } Resulttmp;
 
-
-void freeJudgeDataElement(JudgeDataMap judgeDataToFree);
 
 char *stringCopy(const char *str) {
     if (str == NULL) {
@@ -49,6 +43,7 @@ char *stringCopy(const char *str) {
     }
     return strDest;
 }
+
 
 ListElement copyStringData(ListElement strvoid) {
 
@@ -67,22 +62,6 @@ ListElement copyStringData(ListElement strvoid) {
 }
 
 
-
-static VoteDataElement copyVoteDataElement(VoteDataElement voteToCopy) {
-
-    if (voteToCopy == NULL) {
-        return NULL;
-    }
-
-    int *ptr = malloc(sizeof(int));
-    if (ptr == NULL) {
-        return NULL;
-    }
-    *ptr = *(int *) voteToCopy;
-
-    return ptr;
-}
-
 static KeyElement copyKeyElement(KeyElement keyToCopy) {
 
     if (keyToCopy == NULL) {
@@ -96,9 +75,6 @@ static KeyElement copyKeyElement(KeyElement keyToCopy) {
     return ptr;
 }
 
-void freeVoteDataElement(VoteDataElement voteToFree) {
-    free(voteToFree);
-}
 
 void freeKeyElement(KeyElement keyToFree) {
     free(keyToFree);
@@ -119,51 +95,6 @@ int compareKeyElements(KeyElement key1, KeyElement key2) {
 }
 
 
-static JudgeDataMap copyJudgeDataElement(JudgeDataMap judgeDataToCopy) {
-    if (judgeDataToCopy == NULL) {
-        return NULL;
-    }
-
-    JudgeData data = (JudgeData) judgeDataToCopy;
-
-    if (data->judgeName == NULL || data->judgeResults == NULL) {
-
-        return NULL;
-    }
-    JudgeData judgeDataNew = malloc(sizeof(*judgeDataNew));
-
-    if (judgeDataNew == NULL) {
-        return NULL;
-    } else {
-
-        judgeDataNew->judgeName = stringCopy(data->judgeName);
-        if (judgeDataNew->judgeName == NULL) {
-            freeJudgeDataElement(judgeDataNew);
-            return NULL;
-        }
-
-        judgeDataNew->judgeResults = malloc((sizeof(int)) * NUMBER_OF_RESULTS);
-        if (judgeDataNew->judgeResults == NULL) {
-            freeJudgeDataElement(judgeDataNew);
-         //   free(judgeDataNew->judgeName);
-            return NULL;
-        }
-
-        for (int i = 0; i < NUMBER_OF_RESULTS; i++) {
-
-            judgeDataNew->judgeResults[i] = data->judgeResults[i];
-        }
-
-        return judgeDataNew;
-    }
-}
-
-void freeJudgeDataElement(JudgeDataMap judgeDataToFree) {
-    JudgeData ptr = (JudgeData) judgeDataToFree;
-    free(ptr->judgeName);
-    free(ptr->judgeResults);
-    free(ptr);
-}
 
 Eurovision eurovisionCreate() {
     Eurovision eurovision = malloc(sizeof(*eurovision));

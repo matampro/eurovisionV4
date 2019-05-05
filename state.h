@@ -20,7 +20,11 @@ typedef struct {
     Map citizenVote;
 }*StateData;
 
+
+
 StateDataMap copyStateData(StateDataMap dataToCopy);
+
+
 char *stringCopy(const char *str);
 
 /** Function to be used by the map for freeing elements */
